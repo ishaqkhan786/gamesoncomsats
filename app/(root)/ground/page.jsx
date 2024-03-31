@@ -20,7 +20,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { MdAdd } from 'react-icons/md'
-
+import RemoveGround from '@/components/shared/RemoveGround'
 const page = async () => {
 
 
@@ -105,6 +105,10 @@ const page = async () => {
                     session.user.role === 'admin' ? 'Check Bookings' : 'Book slot'
                   }
                 </Link>
+                <RemoveGround id={ground._id} />
+
+
+                
               </div>)
           })
         }

@@ -47,25 +47,18 @@ const AddEvent = () => {
         },
     });
     async function onSubmit(values) {
-        console.log({ ...values, date });
 
+        setValidation('');
         
 
-
-
-        const res = await toast.promise(createEvent({ ...values, date }),
-            {
-                success: "Event Added",
-                loading: 'Adding Event',
-                error: "Error Adding Event"
-            })
+        const res = await createEvent({ ...values, date });
         console.log(res)
-        if (res.status && res.status === 401) {
-            setValidation("Event Already Added");
+        if (res.message) {
+            setValidation(res.message);
+            return;
         }
-        else {
+            toast.success('Event Added')
             router.refresh()
-        }
 
     }
     return (

@@ -89,7 +89,6 @@ const page = async () => {
 
                     <BookEquipment bookerId={userId} itemId={item._id} />
 
-
                   </div>))
               }
 

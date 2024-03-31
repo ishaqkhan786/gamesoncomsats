@@ -7,6 +7,7 @@ import { MdLocationPin, MdDateRange } from "react-icons/md";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { getServerSession } from "next-auth";
 import { redirect } from 'next/navigation';
+import RemoveEvent from '@/components/shared/RemoveEvent';
 
 const page = async () => {
 
@@ -97,7 +98,7 @@ const page = async () => {
                                                 )
                                             )
                                         }
-
+                                        <RemoveEvent id={event._id} />
                                         {/* <p className='text-salte-600 font-medium text-sm'>
                                             Total Teams: <span className='font-lg text-primary-500 font-semibold'>{event.totalTeams}</span>
                                         </p> */}

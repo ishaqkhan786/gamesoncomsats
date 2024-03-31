@@ -3,9 +3,13 @@
 import Link from 'next/link';
 import React from 'react'
 import { PieChart, } from 'react-minimal-pie-chart'
-
+import { Button } from '../ui/button';
+import { removeEquipment } from '@/lib/database/actions/equipment.actions';
+import toast from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
 const EquipmentCharts = ({ data }) => {
-    console.log(data);
+
+    const router = useRouter();
     return (
         <div className=' w-full mt-6 flex items-center justify-center gap-6 flex-wrap '>
             {
@@ -47,8 +51,16 @@ const EquipmentCharts = ({ data }) => {
                             <p className='text-slate-700'>Avaiable: <span className='text-primary font-bold text-lg'>{eqp.availableQuantity}</span> </p>
                             <p className='text-slate-700'>Booked: <span className='text-primary font-bold text-lg'>{eqp.bookedQuantity}</span> </p>
                         </div>
-
-                        <Link href={`/inventory/${eqp._id}`} className="mt-4 bg-primary px-4 py-2 text-sm rounded-md text-white" varient="sm">Check Bookings</Link>
+                        <div className='flex text-center justify-center gap-3'><Link href={`/inventory/${eqp._id}`} className="mt-4 bg-primary px-4 py-2 text-sm rounded-md text-white" varient="sm">Check Bookings</Link>
+                        <Button className="mt-4 bg-red-500 px-6 py-1 text-sm rounded-md text-white"
+                        onClick={async()=>{
+                            console.log('deleted');
+                            await removeEquipment(eqp._id);
+                            router.refresh();
+                            toast.success('item removed');
+                        }}
+                        >Remove Item</Button></div>
+                        
 
                     </div>
                 ))
