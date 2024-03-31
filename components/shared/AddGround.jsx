@@ -39,7 +39,7 @@ const AddGround = () => {
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "cricket Bat",
+      name: "cricket ground",
       timeAllowed: "1",
       sportsType: "cricket"
     },

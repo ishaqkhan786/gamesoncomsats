@@ -13,7 +13,7 @@ const RemoveGround = ({id}) => {
                             console.log('deleted');
                             await removeGround(id);
                             router.refresh();
-                            // toast.success('ground removed');
+                            toast.success('ground removed');
                         }}
                         >Remove Ground</Button>
   )
