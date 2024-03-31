@@ -105,7 +105,11 @@ const page = async () => {
                     session.user.role === 'admin' ? 'Check Bookings' : 'Book slot'
                   }
                 </Link>
-                <RemoveGround id={ground._id} />
+                
+                {
+        session.user && session.user.role === "admin" && (
+                <RemoveGround id={ground._id} /> )
+        }
 
 
                 

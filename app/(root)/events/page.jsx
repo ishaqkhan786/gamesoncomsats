@@ -98,7 +98,11 @@ const page = async () => {
                                                 )
                                             )
                                         }
-                                        <RemoveEvent id={event._id} />
+                                         {
+                                            session.user.role === 'admin' && (
+                                                <RemoveEvent id={event._id} />
+                                            )
+                                         }
                                         {/* <p className='text-salte-600 font-medium text-sm'>
                                             Total Teams: <span className='font-lg text-primary-500 font-semibold'>{event.totalTeams}</span>
                                         </p> */}
