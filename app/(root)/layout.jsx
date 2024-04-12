@@ -17,7 +17,7 @@ export default async function RootLayout({
          bg-white shadow items-center justify-center  text-3xl
           font-bold text-primary">
           <Image src={'/logo.png'} width={70} height={70} alt={'logo'} />
-          <h2 className=" ">GAMES ON COMSATS</h2>
+          <h2 className=" ">GAME ON COMSATS</h2>
         </div>
         {children}
       </main>

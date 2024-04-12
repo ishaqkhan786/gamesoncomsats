@@ -114,7 +114,7 @@ export default function ProfileForm() {
         >
 
           <h2 className="text-2xl font-bold text-primary">
-            Games on Comsats
+            Game on Comsats
           </h2>
           <Separator />
           <form

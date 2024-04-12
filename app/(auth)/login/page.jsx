@@ -90,7 +90,7 @@ export default function ProfileForm() {
           className="flex flex-col items-center bg-white shadow-md w-[18rem] sm:w-[24rem]  rounded-xl px-8 pt-6 pb-8 mb-4 space-y-6"
         >
           <h2 className="text-2xl font-bold text-primary">
-            Games on Comsats
+            Game on Comsats
           </h2>
           <Separator />
           <form
@@ -167,7 +167,7 @@ export default function ProfileForm() {
                 )}
               </Button>
               <p className="text-xs font-thin mt-2">
-                Already have an account:
+                Didn't have an account?
                 <Link
                   className="font-semibold text-primary-500"
                   href={"/signup"}
