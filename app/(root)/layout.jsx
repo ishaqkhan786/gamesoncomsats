@@ -2,23 +2,42 @@
 // import Navbar from "@/components/shared/Header";
 
 import Sidebar from "@/components/shared/Sidebar";
-import Image from "next/image"
+import Image from "next/image";
 
-export default async function RootLayout({
-  children,
-}) {
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import Navbar from "@/components/shared/Navbar";
+import { redirect } from "next/navigation";
+
+export default async function RootLayout({ children }) {
+  const sessionUser = await getServerSession(authOptions);
+  if (!sessionUser) {
+    redirect("/login");
+  }
 
   return (
-    <div className=" h-screen flex  bg-slate-50 ">
+    <div
+      className={`h-screen flex ${
+        sessionUser.user && sessionUser.user.role !== "admin"
+          ? "flex-col"
+          : "flex-row"
+      } bg-slate-50 `}
+    >
       {/* <Navbar /> */}
-      <Sidebar />
-      <main className="flex-1 overflow-y-scroll">
-        <div className=" hidden w-full sticky md:flex p-4 
-         bg-white shadow items-center justify-center  text-3xl
-          font-bold text-primary">
-          <Image src={'/logo.png'} width={70} height={70} alt={'logo'} />
-          <h2 className=" ">GAME ON COMSATS</h2>
+      {sessionUser.user.role === "admin" && <Sidebar />}
+      {sessionUser.user.role !== "admin" && (
+        <div className="sticky top-0 z-50 w-full">
+          <Navbar user={{ ...sessionUser.user, id: undefined }} />
         </div>
+      )}
+
+      <main
+        className={`flex-1 ${
+          sessionUser.user && sessionUser.user.role === "admin"
+            ? " overflow-y-scroll scroll-smooth "
+            : null
+        }  `}
+      >
         {children}
       </main>
       {/* <Footer />- */}

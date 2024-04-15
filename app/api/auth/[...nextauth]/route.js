@@ -26,33 +26,15 @@ export const authOptions = {
 
         await connectToDatabase();
         const user = await User.findOne({ email });
-        console.log('user found', user);
-        // if (!user) {
-        //   try
-        //   {
-        //      const hashedPassword = await hashPassword(password);
-        //     const user = await User.create({
-        //       username,
-        //       email,
-        //       password: hashedPassword,
-        //       role,
-        //     });
-        //     console.log("user created: ",user)
-        //     return NextResponse.json({ message: "user created", user, status: 200 });
-        //   }
-        //   catch(e)
-        //   {
-        //     throw new Error("invalid Email or password");
-        //   }
-
-        // }
-
-        const isValid = await confirmPassword(password, user.password);
-
-        if (!isValid) {
-          throw new Error("Wrong password");
+        if (!user) {
+          throw new Error("Wrong Credentials ");
         }
-
+        console.log('user found', user);
+    
+        const isValid = await confirmPassword(password, user.password);
+        if (!isValid) {
+          throw new Error("Wrong Credentials");
+        }
         return {
           id: user._id,
           email: user.email,

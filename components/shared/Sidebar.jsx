@@ -1,14 +1,20 @@
-"use client"
+"use client";
 // import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 // import { getServerSession } from "next-auth";
 import Logout from "./Logout";
 import Link from "next/link";
 import Navlinks from "./Navlinks";
-import Links from './Links';
+import Links from "./Links";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
+// import { getServerSession } from "next-auth";
+// import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 const Sidebar = () => {
-
+  // const get = async () => {
+  //   const ses = await getServerSession(authOptions);
+  //   console.log("ses", ses);
+  // };
+  // get();
   // const session = await getServerSession(authOptions)
   const session = useSession();
 
@@ -29,19 +35,22 @@ const Sidebar = () => {
             </p>
           </div>
 
-          {
-            session.status === "authenticated" ? (<div
+          {session.status === "authenticated" ? (
+            <div
               id="profile"
               className="px-6 py-6 bg-indigo-950 mt-2 mb-4 mx-2 rounded-lg"
             >
               <p className="text-white">Welcome,</p>
-              <div href="#" className="inline-flex w-full space-x-3 mt-2 items-center">
+              <div
+                href="#"
+                className="inline-flex w-full space-x-3 mt-2 items-center"
+              >
                 <span>
                   <Image
                     className="rounded-full w-10 h-8"
                     width={24}
                     height={24}
-                    src={'/pp.png'}
+                    src={"/pp.png"}
                     alt=""
                   />
                 </span>
@@ -53,17 +62,24 @@ const Sidebar = () => {
                     <Logout />
                   </p>
 
-                  <span className="text-xs  block text-slate-400 capitalize">{session.data.user.role}</span>
+                  <span className="text-xs  block text-slate-400 capitalize">
+                    {session.data.user.role}
+                  </span>
                 </div>
               </div>
-            </div>) : (<div className="px-6 flex items-center justify-center py-6 bg-indigo-950 mt-2 mb-4 mx-2 rounded-lg">
-              <Link href={'/login'} className="font-bold text-lg text-white ">Login/Sign</Link>
-            </div>)
-          }
-          {
-            session && session.status !== 'authenticated' ? <Navlinks /> : <Links sessionData={session} />
-
-          }
+            </div>
+          ) : (
+            <div className="px-6 flex items-center justify-center py-6 bg-indigo-950 mt-2 mb-4 mx-2 rounded-lg">
+              <Link href={"/login"} className="font-bold text-lg text-white ">
+                Login/Sign
+              </Link>
+            </div>
+          )}
+          {session && session.status !== "authenticated" ? (
+            <Navlinks />
+          ) : (
+            <Links sessionData={session} />
+          )}
         </div>
         {/* Movbile Sidebar */}
         <div className="flex md:hidden ">
@@ -89,19 +105,22 @@ const Sidebar = () => {
                 Manage your actions and activities
               </p>
             </div>
-            {
-              session.status === "authenticated" ? (<div
+            {session.status === "authenticated" ? (
+              <div
                 id="profile"
                 className="px-6 py-6 bg-indigo-950 mt-2 mb-4 mx-2 rounded-lg"
               >
                 <p className="text-white">Welcome,</p>
-                <div href="#" className="inline-flex w-full space-x-3 mt-2 items-center">
+                <div
+                  href="#"
+                  className="inline-flex w-full space-x-3 mt-2 items-center"
+                >
                   <span>
                     <Image
                       className="rounded-full w-10 h-8"
                       width={24}
                       height={24}
-                      src={'/pp.png'}
+                      src={"/pp.png"}
                       alt=""
                     />
                   </span>
@@ -113,17 +132,24 @@ const Sidebar = () => {
                       <Logout />
                     </p>
 
-                    <span className="text-xs  block text-slate-400 capitalize">{session.data.user.role}</span>
+                    <span className="text-xs  block text-slate-400 capitalize">
+                      {session.data.user.role}
+                    </span>
                   </div>
                 </div>
-              </div>) : (<div className="px-6 flex items-center justify-center py-6 bg-indigo-950 mt-2 mb-4 mx-2 rounded-lg">
-                <Link href={'/login'} className="font-bold text-lg text-white ">Login/Sign</Link>
-              </div>)
-            }
-            {
-              session && session.status !== 'authenticated' ? <Navlinks /> : <Links sessionData={session} />
-
-            }
+              </div>
+            ) : (
+              <div className="px-6 flex items-center justify-center py-6 bg-indigo-950 mt-2 mb-4 mx-2 rounded-lg">
+                <Link href={"/login"} className="font-bold text-lg text-white ">
+                  Login/Sign
+                </Link>
+              </div>
+            )}
+            {session && session.status !== "authenticated" ? (
+              <Navlinks />
+            ) : (
+              <Links sessionData={session} />
+            )}
           </div>
         </div>
         {/* Mobile Sidebar end */}

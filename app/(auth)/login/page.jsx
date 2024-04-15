@@ -24,7 +24,6 @@ import { ColorRing } from "react-loader-spinner";
 import Link from "next/link";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { FcGoogle } from "react-icons/fc";
 
 const formSchema = z.object({
   email: z.string().email({
@@ -36,12 +35,8 @@ const formSchema = z.object({
 });
 
 export default function ProfileForm() {
-  // ...
-
   const router = useRouter();
-
   const session = useSession();
-  console.log(session);
 
   const [validation, setValidation] = useState("");
   const [loading, setLoading] = useState(false);
@@ -67,14 +62,14 @@ export default function ProfileForm() {
     setLoading(false);
     console.log(response);
     if (response?.ok) {
-
-      toast.success("Login successful!");
       router.push("/");
+      toast.success("Login successful!");
     }
     if (response?.error) {
       setValidation(response.error);
     }
   }
+
   return (
     <>
       <div className=" absolute p-8 left-0 top-0">
@@ -84,102 +79,114 @@ export default function ProfileForm() {
           </Link>
         </button>
       </div>
-      <Form {...form}>
-        <div
-          id="first"
-          className="flex flex-col items-center bg-white shadow-md w-[18rem] sm:w-[24rem]  rounded-xl px-8 pt-6 pb-8 mb-4 space-y-6"
-        >
-          <h2 className="text-2xl font-bold text-primary">
-            Game on Comsats
-          </h2>
-          <Separator />
-          <form
-            id="container"
-            onSubmit={form.handleSubmit(onSubmit)}
-            className=" w-full"
-          >
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem className="mb-4">
-                  <FormLabel className="block text-gray-700 font-bold mb-2">
-                    Email
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="Email"
-                      {...field}
-                      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem className="mb-4">
-                  <FormLabel className="block text-gray-700 font-bold mb-2">
-                    Password
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      type="password"
-                      placeholder="Password"
-                      {...field}
-                      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                  <p className="text-sm text-red-400 font-semibold">
-                    {validation}
-                  </p>
-                </FormItem>
-              )}
-            />
-            <div className="flex flex-col w-full items-center justify-center">
-              <Button
-                type="submit"
-                className="bg-primary-500 hover:bg-primary mt-3 text-white font-semibold py-2 px-14 rounded-full  focus:outline-none focus:shadow-outline"
+      <div className="flex items-center justify-center shadow-md my-6  bg-gray-800 max-h-[80%]  overflow-hidden  w-full rounded">
+        <Image
+          src={"/pingpong.jpg"}
+          alt="ping"
+          width={340}
+          height={100}
+          className="  object-center object-fill hidden md:block "
+        />
+        <div className=" h-full">
+          <Form {...form}>
+            <div
+              id="first"
+              className="flex flex-col items-center h-full bg-white shadow-md w-[18rem] sm:w-[24rem]  px-8 pt-12 pb-20  space-y-7"
+            >
+              {/* <h2 className="text-2xl font-bold text-primary">
+                Game on Comsats
+              </h2> */}
+              <Image src={"/comsats.png"} alt="logo" width={100} height={50} />
+              <Separator />
+              <form
+                id="container"
+                onSubmit={form.handleSubmit(onSubmit)}
+                className=" w-full"
               >
-                {loading ? (
-                  <ColorRing
-                    visible={true}
-                    height="35"
-                    width="35"
-                    ariaLabel="color-ring-loading"
-                    wrapperStyle={{}}
-                    wrapperClass="color-ring-wrapper"
-                    colors={[
-                      "#ffffff",
-                      "#ffffff",
-                      "#ffffff",
-                      "#ffffff",
-                      "#ffffff",
-                    ]}
-                  />
-                ) : (
-                  <span>Login</span>
-                )}
-              </Button>
-              <p className="text-xs font-thin mt-2">
-                Didn't have an account?
-                <Link
-                  className="font-semibold text-primary-500"
-                  href={"/signup"}
-                >
-                  {" "}
-                  Sign up
-                </Link>
-              </p>
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem className="mb-4">
+                      <FormLabel className="block text-gray-700 font-bold mb-2">
+                        Email
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="Email"
+                          {...field}
+                          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem className="mb-4">
+                      <FormLabel className="block text-gray-700 font-bold mb-2">
+                        Password
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          type="password"
+                          placeholder="Password"
+                          {...field}
+                          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                      <p className="text-sm text-red-400 font-semibold">
+                        {validation}
+                      </p>
+                    </FormItem>
+                  )}
+                />
+                <div className="flex flex-col w-full items-center justify-center">
+                  <Button
+                    type="submit"
+                    className="bg-primary-500 hover:bg-primary mt-3 text-white font-semibold py-2 px-14 rounded-full  focus:outline-none focus:shadow-outline"
+                  >
+                    {loading ? (
+                      <ColorRing
+                        visible={true}
+                        height="35"
+                        width="35"
+                        ariaLabel="color-ring-loading"
+                        wrapperStyle={{}}
+                        wrapperClass="color-ring-wrapper"
+                        colors={[
+                          "#ffffff",
+                          "#ffffff",
+                          "#ffffff",
+                          "#ffffff",
+                          "#ffffff",
+                        ]}
+                      />
+                    ) : (
+                      <span>Login</span>
+                    )}
+                  </Button>
+                  <p className="text-xs font-thin mt-2">
+                    Didn't have an account?
+                    <Link
+                      className="font-semibold text-primary-500"
+                      href={"/signup"}
+                    >
+                      {" "}
+                      Sign up
+                    </Link>
+                  </p>
+                </div>
+              </form>
             </div>
-          </form>
+          </Form>
         </div>
-      </Form>
+      </div>
     </>
   );
 }
