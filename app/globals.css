@@ -274,3 +274,24 @@ body {
 .react-datepicker__time-list-item--selected {
   background-color: #624cf5 !important;
 }
+
+
+#dot {
+  color: red;
+  font-size: 2.5rem;
+  filter: drop-shadow(0px 0px 3px red);
+  animation: glow 1.5s infinite;
+}
+@keyframes glow {
+  0% {
+    filter: drop-shadow(0px 0px 3px red);
+  }
+
+  50% {
+    filter: drop-shadow(0px 0px 8px red);
+  }
+
+  100% {
+    filter: drop-shadow(0px 0px 3px red);
+  }
+}

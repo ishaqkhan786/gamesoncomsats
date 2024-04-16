@@ -91,14 +91,15 @@ const Navbar = ({ user }) => {
             </SheetContent>
           </Sheet>
         </div>
-
         <Image
           src="/comsats.png"
           width={40}
           height={35}
           alt="Logo"
-          className={`" w-[0px] transition-all ${
-            isScrolled ? "md:w-[50px]" : "md:w-[100px]"
+          className={`" transition-all ${
+            isScrolled
+              ? "md:w-[50px] bg-white rounded-full shadow-sm  "
+              : "md:w-[100px]"
           } "`}
         />
       </div>

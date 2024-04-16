@@ -20,7 +20,7 @@ const NonAdminNavlinks = ({ isScrolled }) => {
                 link.href === pathname
                   ? isScrolled
                     ? "text-white"
-                    : "text-slate-300"
+                    : "text-primary"
                   : isScrolled
                   ? "text-slate-300"
                   : "text-slate-300"
@@ -28,7 +28,8 @@ const NonAdminNavlinks = ({ isScrolled }) => {
             })}
             <Link
               href={link.href}
-              className={`${
+              className={` 
+              ${
                 link.href === pathname
                   ? isScrolled
                     ? "text-white font-semibold border-b border-white"

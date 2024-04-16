@@ -5,6 +5,8 @@ import Image from "next/image";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
+import Link from "next/link";
+import { MdArrowOutward } from "react-icons/md";
 
 export default async function Home() {
   const session = await getServerSession(authOptions);
@@ -40,10 +42,10 @@ export default async function Home() {
     { name: "Elite United", date: "April 15, 2024" },
   ];
 
-  const matchDetails = await getOngoingMatchDetails();
+  const onGoingMatches = await getOngoingMatchDetails();
 
   return (
-    <>
+    <div>
       {session.user.role === "admin" ? (
         <>
           <h2 className=" text-2xl ml-2 md:text-3xl font-bold mb-1 px-6 mt-2 pt-4 w-full">
@@ -59,7 +61,7 @@ export default async function Home() {
                 </span>
               </p>
               {/* Conditional rendering for live match */}
-              {matchDetails && matchDetails.length > 0 ? (
+              {onGoingMatches && onGoingMatches.length > 0 ? (
                 <p className="text-lg font-semibold text-primary">
                   Live match streaming now
                 </p>
@@ -91,9 +93,10 @@ export default async function Home() {
                 <span className="font-bold text-white">Sports Portal.</span>
               </p>
               {/* Conditional rendering for live match */}
-              {matchDetails && matchDetails.length > 0 ? (
+              {onGoingMatches && onGoingMatches.length > 0 ? (
                 <p className="text-lg font-semibold text-white">
-                  Live match streaming now
+                  <span className=" mr-1">{onGoingMatches.length}</span> Live
+                  match streaming now
                 </p>
               ) : (
                 <p className="text-lg font-semibold text-white">
@@ -115,10 +118,73 @@ export default async function Home() {
       )}
       {/* Hero section */}
 
-      {matchDetails && matchDetails.length > 0 && (
-        <LiveScore matchData={matchDetails[0]} />
+      {/* {onGoingMatches &&
+        onGoingMatches.length > 0 &&
+        onGoingMatches.map((match) => {
+          if (match.sportsType === "cricket") {
+            return <div>heloo</div>;
+          }
+        })} */}
+      {onGoingMatches && onGoingMatches.length > 0 && (
+        <div className=" flex flex-col w-[93%] bg-white px-12 mx-auto   p-4 rounded-md shadow">
+          <h2 className=" text-2xl font-bold border-b w-full pb-2 ">
+            Live Matches
+            <span id="dot" className="ml-1">
+              .
+            </span>{" "}
+          </h2>
+          <div className=" py-6 w-full grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8 lg:grid-cols-3">
+            {onGoingMatches.map((match) => (
+              <div className=" flex flex-col items-center justify-center bg-blue-50 rounded-lg shadow-md p-3">
+                <h2 className=" text-2xl font-bold leading-5 border-b w-full pb-4 flex justify-center my-4 ">
+                  {match.sportsType}
+                </h2>
+                <div className=" flex items-center justify-evenly w-full">
+                  <div className="flex flex-col items-center justify-center">
+                    <Image
+                      src={"/sheild.png"}
+                      className=" mb-2"
+                      width={80}
+                      height={50}
+                      alt="team"
+                    />
+                    <h2 className=" font-semibold text-xl leading-4">
+                      {match.teamA}
+                    </h2>
+                  </div>
+                  <div>
+                    <p className=" font-semibold text-lg">
+                      {/* <span className=" text-2xl font-bold">1</span> -{" "}
+                  <span className=" text-2xl font-bold">3</span> */}
+                      VS
+                    </p>
+                  </div>
+                  <div className="flex flex-col items-center justify-center">
+                    <Image
+                      src={"/sheild.png"}
+                      className=" mb-2"
+                      width={80}
+                      height={50}
+                      alt="team"
+                    />
+                    <h2 className=" font-semibold text-xl leading-4">
+                      {match.teamB}
+                    </h2>
+                  </div>{" "}
+                </div>
+                <div className=" my-8 flex justify-center bg-white w-[90%] rounded-md p-3">
+                  <Link
+                    href="/livescore"
+                    className=" inline-flex gap-2 items-center"
+                  >
+                    Checkout Details <MdArrowOutward className="text-lg" />
+                  </Link>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       )}
-
       {/* Featured Events Section */}
       <div className="w-[95%] mx-auto my-6 rounded-md bg-white p-4 px-8 shadow">
         <h2 className="text-2xl font-semibold mb-4">Featured Events</h2>
@@ -178,6 +244,6 @@ export default async function Home() {
         </div>
       </div>
       {/* Call-to-Action Buttons */}
-    </>
+    </div>
   );
 }

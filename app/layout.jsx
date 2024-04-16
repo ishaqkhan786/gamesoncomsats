@@ -7,8 +7,7 @@ const poppins = Poppins({
   weight: ["400", "500", "600", "700", "800"],
   variable: "--font-poppins",
 });
-import NextTopLoader from 'nextjs-toploader';
-
+import NextTopLoader from "nextjs-toploader";
 
 export const metadata = {
   title: "Game On COMSATS",
@@ -18,14 +17,12 @@ export const metadata = {
   // },
 };
 
-export default function RootLayout({
-  children,
-}) {
+export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning={true}>
       <AuthSessionProvider>
         <body className={poppins.variable}>
-        <NextTopLoader />
+          <NextTopLoader />
           {children}
           <Toaster position="top-center" />
         </body>

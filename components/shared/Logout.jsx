@@ -16,12 +16,10 @@ const Logout = () => {
     router.push("/");
   };
   return (
-    <div className="bg-slate-50 p-1 rounded-sm">
-      <LuLogOut
-        className=" hover:cursor-pointer text-slate-600"
-        onClick={logoutUser}
-      />
-    </div>
+    <LuLogOut
+      className=" hover:cursor-pointer bg-slate-50 p-1 rounded text-2xl text-slate-600"
+      onClick={logoutUser}
+    />
   );
 };
 
