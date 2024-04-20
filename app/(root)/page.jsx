@@ -135,7 +135,10 @@ export default async function Home() {
           </h2>
           <div className=" py-6 w-full grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8 lg:grid-cols-3">
             {onGoingMatches.map((match) => (
-              <div className=" flex flex-col items-center justify-center bg-blue-50 rounded-lg shadow-md p-3">
+              <div
+                key={match._id}
+                className=" flex flex-col items-center justify-center bg-blue-50 rounded-lg shadow-md p-3"
+              >
                 <h2 className=" text-2xl font-bold leading-5 border-b w-full pb-4 flex justify-center my-4 ">
                   {match.sportsType}
                 </h2>
@@ -148,7 +151,7 @@ export default async function Home() {
                       height={50}
                       alt="team"
                     />
-                    <h2 className=" font-semibold text-xl leading-4">
+                    <h2 className=" font-semibold text-xl  text-center">
                       {match.teamA}
                     </h2>
                   </div>
@@ -167,7 +170,7 @@ export default async function Home() {
                       height={50}
                       alt="team"
                     />
-                    <h2 className=" font-semibold text-xl leading-4">
+                    <h2 className=" font-semibold text-xl text-center">
                       {match.teamB}
                     </h2>
                   </div>{" "}

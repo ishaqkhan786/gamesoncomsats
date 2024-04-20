@@ -30,6 +30,10 @@ io.on("connection", (socket) => {
         console.log('football score', footballData);
         io.emit('footballScore', footballData)
     })
+    socket.on('basketballScore', (basketballData) => {
+        console.log('basketball score', basketballData);
+        io.emit('basketballScore', basketballData)
+    })
     socket.on('cricketScore', (cricketData) => {
         console.log(cricketData);
         io.emit('cricketScore', cricketData)

@@ -7,6 +7,7 @@ import { MdEmojiEvents } from "react-icons/md";
 import { usePathname } from "next/navigation";
 import { BiSolidCricketBall } from "react-icons/bi";
 import { SiSecurityscorecard } from "react-icons/si";
+import { GiShoppingBag } from "react-icons/gi";
 
 import Link from "next/link";
 
@@ -40,6 +41,12 @@ export const adminLinks = [
     description: "Score card and results",
     icon: <SiSecurityscorecard />,
     href: "/livescore",
+  },
+  {
+    text: "E Shop",
+    description: "Get exciting merchendise",
+    icon: <GiShoppingBag />,
+    href: "/e-shop",
   },
 ];
 

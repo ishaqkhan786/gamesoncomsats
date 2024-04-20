@@ -75,11 +75,7 @@ const Sidebar = () => {
               </Link>
             </div>
           )}
-          {session && session.status !== "authenticated" ? (
-            <Navlinks />
-          ) : (
-            <Links sessionData={session} />
-          )}
+          <Navlinks />
         </div>
         {/* Movbile Sidebar */}
         <div className="flex md:hidden ">

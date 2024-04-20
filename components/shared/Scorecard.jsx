@@ -18,6 +18,7 @@ import { startMatch } from "@/lib/database/actions/match.actions";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import LiveScore from "./LiveScore";
+import BasketballScorecard from "./BasketballScorecard";
 const page = ({ events, matches }) => {
   const session = useSession();
   const router = useRouter();
@@ -211,7 +212,7 @@ const page = ({ events, matches }) => {
             }
             if (match.sportsType === "basketball") {
               return (
-                <FootballScorecard
+                <BasketballScorecard
                   key={match._id}
                   sportsType={match.sportsType}
                   teamA={match.teamA}
@@ -239,7 +240,7 @@ const page = ({ events, matches }) => {
       )}
 
       {matches ? (
-        matches.map((match) => <LiveScore matchData={match} />)
+        matches.map((match) => <LiveScore key={match._id} matchData={match} />)
       ) : (
         <div className="w-full flex items-center justify-center p-4 mt-6 ">
           <p className=" font-semibold italic text-primary">

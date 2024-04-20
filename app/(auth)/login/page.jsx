@@ -38,6 +38,10 @@ export default function ProfileForm() {
   const router = useRouter();
   const session = useSession();
 
+  // console.log(session);
+  // if (session.status === "authenticated") {
+  //   router.push("/");
+  // }
   const [validation, setValidation] = useState("");
   const [loading, setLoading] = useState(false);
   const form = useForm({
@@ -62,7 +66,7 @@ export default function ProfileForm() {
     setLoading(false);
     console.log(response);
     if (response?.ok) {
-      router.push("/");
+      router.replace("/");
       toast.success("Login successful!");
     }
     if (response?.error) {

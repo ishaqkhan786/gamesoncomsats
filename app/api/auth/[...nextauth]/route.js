@@ -40,6 +40,7 @@ export const authOptions = {
           email: user.email,
           name: user.username,
           role: user.role,
+          address:user.address,
         };
       },
     }),
@@ -55,6 +56,7 @@ export const authOptions = {
       session.user.firstName = userData?.firstName;
       session.user.lastName = userData?.lastName;
       session.user.role = userData.role;
+      session.user.address = userData.address;
 
       return session;
     },
