@@ -18,6 +18,7 @@
     "@radix-ui/react-select": "^2.0.0",
     "@radix-ui/react-separator": "^1.0.3",
     "@radix-ui/react-slot": "^1.0.2",
+    "@uploadthing/react": "^6.4.4",
     "aws4": "^1.12.0",
     "bcryptjs": "^2.4.3",
     "class-variance-authority": "^0.7.0",
@@ -38,9 +39,11 @@
     "socket.io-client": "^4.7.5",
     "tailwind-merge": "^2.2.1",
     "tailwindcss-animate": "^1.0.7",
+    "uploadthing": "^6.9.0",
     "zod": "^3.22.4"
   },
   "devDependencies": {
+    "@types/react": "18.2.79",
     "autoprefixer": "^10.0.1",
     "eslint": "^8",
     "eslint-config-next": "14.1.0",

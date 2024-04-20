@@ -43,90 +43,101 @@ const Cart = ({ cart }) => {
         </div>
       </AlertDialogTrigger>
       <AlertDialogContent className="bg-white">
-        <AlertDialogHeader>
-          <AlertDialogTitle className="inline-flex text-lg items-center gap-2 text-primary border-b pb-2 w-full">
-            <FaShoppingCart className="text-xl" />
-            Your Cart
-          </AlertDialogTitle>
-          <div className="flex flex-col items-start justify-start gap-2 border-b py-6 ">
-            {cart.map((item) => (
-              <div
-                key={item._id}
-                className="flex w-full items-center justify-between"
-              >
-                <div className=" flex items-start justify-center gap-1">
-                  <Image
-                    src={"/heruo.png"}
-                    width={100}
-                    height={100}
-                    className=" h-20 w-20 object-contain object-center shadow-sm"
-                  />
-                  <div className=" flex flex-col items-start justify-center ml-2">
-                    <h1 className=" text-lg font-bold mb-2 text-primary capitalize">
-                      {item.product.productName}
-                    </h1>
-                    <div className=" flex items-center justify-center gap-4">
-                      <FaMinus
-                        onClick={async () => {
-                          toast.promise(updateCartItem("minus", item._id), {
-                            loading: "Removing Item",
-                            success: "Item removed",
-                            error: "error",
-                          });
-                          router.refresh();
-                        }}
-                        className=" hover:bg-slate-50 rounded-full cursor-pointer "
+        {cart.length === 0 ? (
+          <AlertDialogDescription className="text-center flex flex-col gap-4 text-lg text-primary">
+            <p>Your Cart is Empty</p>
+            <AlertDialogCancel>Close</AlertDialogCancel>
+          </AlertDialogDescription>
+        ) : (
+          <>
+            <AlertDialogHeader>
+              <AlertDialogTitle className="inline-flex text-lg items-center gap-2 text-primary border-b pb-2 w-full">
+                <FaShoppingCart className="text-xl" />
+                Your Cart
+              </AlertDialogTitle>
+              <div className="flex flex-col items-start justify-start gap-2 border-b py-6 ">
+                {cart.map((item) => (
+                  <div
+                    key={item._id}
+                    className="flex w-full items-center justify-between"
+                  >
+                    <div className=" flex items-start justify-center gap-1">
+                      <Image
+                        src={"/heruo.png"}
+                        width={100}
+                        height={100}
+                        className=" h-20 w-20 object-contain object-center shadow-sm"
                       />
-                      <p className=" text-sm font-light text-slate-600">
-                        Qty:{" "}
-                        <span className=" font-bold text-lg">
-                          {" "}
-                          {item.quantity}
-                        </span>
+                      <div className=" flex flex-col items-start justify-center ml-2">
+                        <h1 className=" text-lg font-bold mb-2 text-primary capitalize">
+                          {item.product.productName}
+                        </h1>
+                        <div className=" flex items-center justify-center gap-4">
+                          <FaMinus
+                            onClick={async () => {
+                              toast.promise(updateCartItem("minus", item._id), {
+                                loading: "Removing Item",
+                                success: "Item removed",
+                                error: "error",
+                              });
+                              router.refresh();
+                            }}
+                            className=" hover:bg-slate-50 rounded-full cursor-pointer "
+                          />
+                          <p className=" text-sm font-light text-slate-600">
+                            Qty:{" "}
+                            <span className=" font-bold text-lg">
+                              {" "}
+                              {item.quantity}
+                            </span>
+                          </p>
+                          <FaPlus
+                            onClick={async () => {
+                              toast.promise(updateCartItem("add", item._id), {
+                                loading: "Adding Item",
+                                success: "Item Added",
+                                error: "error",
+                              });
+                              router.refresh();
+                            }}
+                            className=" cursor-pointer"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <p className=" font-bold text-xl text-primary">
+                        Rs {item.product.price}/-
                       </p>
-                      <FaPlus
-                        onClick={async () => {
-                          toast.promise(updateCartItem("add", item._id), {
-                            loading: "Adding Item",
-                            success: "Item Added",
-                            error: "error",
-                          });
-                          router.refresh();
-                        }}
-                        className=" cursor-pointer"
-                      />
                     </div>
                   </div>
+                ))}
+              </div>
+            </AlertDialogHeader>
+            <div className=" flex flex-col w-full items-center justify-between mb-4 border-b pb-4">
+              <div className="flex flex-col w-full items-start justify-start mb-2 ">
+                <div className="flex w-full items-center justify-between">
+                  <p>Total Items: </p>
+                  <span className=" text-lg font-bold ml-1 ">
+                    0{cart.length}
+                  </span>{" "}
                 </div>
-                <div>
-                  <p className=" font-bold text-xl text-primary">
-                    Rs {item.product.price}/-
-                  </p>
+                <div className="flex w-full items-center justify-between">
+                  <p className=" text-lg ">SubTotal: </p>
+                  <span className=" text-lg font-bold ">
+                    {totalPrice} Rs
+                  </span>{" "}
                 </div>
               </div>
-            ))}
-          </div>
-        </AlertDialogHeader>
-        <div className=" flex flex-col w-full items-center justify-between mb-4 border-b pb-4">
-          <div className="flex flex-col w-full items-start justify-start mb-2 ">
-            <div className="flex w-full items-center justify-between">
-              <p>Total Items: </p>
-              <span className=" text-lg font-bold ml-1 ">
-                0{cart.length}
-              </span>{" "}
+              <div className=" flex items-center gap-2">
+                <AlertDialogCancel>Close</AlertDialogCancel>
+                <AlertDialogAction>
+                  <Link href={"/e-shop/checkout"}>Checkout</Link>
+                </AlertDialogAction>
+              </div>
             </div>
-            <div className="flex w-full items-center justify-between">
-              <p className=" text-lg ">SubTotal: </p>
-              <span className=" text-lg font-bold ">{totalPrice} Rs</span>{" "}
-            </div>
-          </div>
-          <div className=" flex items-center gap-2">
-            <AlertDialogCancel>Close</AlertDialogCancel>
-            <AlertDialogAction>
-              <Link href={"/e-shop/checkout"}>Checkout</Link>
-            </AlertDialogAction>
-          </div>
-        </div>
+          </>
+        )}
       </AlertDialogContent>
     </AlertDialog>
   );

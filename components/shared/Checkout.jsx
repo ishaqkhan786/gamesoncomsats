@@ -10,6 +10,7 @@ import Cart from "./Cart";
 import toast from "react-hot-toast";
 import { createNewOrder } from "@/lib/database/actions/order.action";
 import { useRouter } from "next/navigation";
+import { delteCartofUser } from "@/lib/database/actions/cart.action";
 const Checkout = ({ cart, userDetails, userId }) => {
   const [totalPrice, setTotalPrice] = useState(0);
   const [selectedAddress, setselectedAddress] = useState("");
@@ -25,16 +26,17 @@ const Checkout = ({ cart, userDetails, userId }) => {
     setTotalPrice(total);
   }, [cart]);
 
-  const placeOrder = () => {
+  const placeOrder = async () => {
     const data = {
       totalAmount: totalPrice,
       totalQuantity: cart.length,
-      items: cart.map((item) => item._id), // Extracting only the _id fields
+      items: [...cart], // Extracting only the _id fields
       user: userId,
       selectedAddress,
       paymentMethod,
     };
     console.log(data);
+    await delteCartofUser(userId);
     toast.promise(createNewOrder(data), {
       loading: "Placing Order",
       success: "Order Placed",

@@ -10,16 +10,25 @@ const EshopNav = async () => {
   const user = await getServerSession(authOptions);
   const userId = user.user.id.toString();
   const cart = await getCartItems(userId);
-  console.log(cart);
+  // console.log("🚀 ~ EshopNav ~ cart:", cart);
   return (
     <div className=" w-full bg-white rounded-md shadow p-4 flex items-center justify-between">
       <h3 className=" font-semibold text-2xl">Checkout Products</h3>
       <div className=" flex items-center justify-center gap-3">
-        <Link href={"/"}>
-          <Button className=" bg-white text-primary border-2 hidden hover:text-white md:block border-primary">
-            Manage Orders
-          </Button>
-        </Link>
+        {user.user.role === "admin" ? (
+          <Link href={"/e-shop/order"}>
+            <Button className=" bg-white text-primary border-2 hidden hover:text-white md:block border-primary">
+              Manage Orders
+            </Button>
+          </Link>
+        ) : (
+          <Link href={`/e-shop/order/${userId}`}>
+            <Button className=" bg-white text-primary border-2 hidden hover:text-white md:block border-primary">
+              Your Orders
+            </Button>
+          </Link>
+        )}
+
         <Cart cart={cart} />
       </div>
     </div>
