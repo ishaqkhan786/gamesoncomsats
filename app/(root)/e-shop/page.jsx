@@ -39,14 +39,14 @@ const page = async () => {
             >
               <Link href={`/e-shop/${product._id}`} className=" cursor-pointer">
                 <Image
-                  src={"/heruo.png"}
+                  src={product.imageurl || "/upload.svg"}
                   width={100}
                   height={100}
-                  className=" object-cover w-36  my-3 h-36 object-center"
+                  className=" object-cover w-36 rounded  shadow-lg  my-3 h-36 object-center"
                 />
               </Link>
 
-              <h2 className=" font-semibold text-xl border-b w-full flex justify-center pb-3 ">
+              <h2 className=" font-semibold  h-16 text-center text-xl border-b w-full flex justify-center pb-3 ">
                 {product.productName}
               </h2>
               <div className=" w-full p-1">

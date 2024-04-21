@@ -150,7 +150,7 @@ const Checkout = ({ cart, userDetails, userId }) => {
                 </div>
                 <Button
                   onClick={placeOrder}
-                  disabled={selectedAddress === "" && paymentMethod === ""}
+                  disabled={selectedAddress === "" || paymentMethod === ""}
                   className=" bg-slate-200 text-slate-600 mb-6 hover:bg-slate-300 hover:text-slate-700"
                 >
                   Place Order

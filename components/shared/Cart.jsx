@@ -63,7 +63,7 @@ const Cart = ({ cart }) => {
                   >
                     <div className=" flex items-start justify-center gap-1">
                       <Image
-                        src={"/heruo.png"}
+                        src={item.product.imageurl}
                         width={100}
                         height={100}
                         className=" h-20 w-20 object-contain object-center shadow-sm"

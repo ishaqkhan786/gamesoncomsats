@@ -1,14 +1,8 @@
-// import Footer from "@/components/shared/Footer";
-// import Navbar from "@/components/shared/Header";
-
-import Sidebar from "@/components/shared/Sidebar";
-import Image from "next/image";
-
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import Navbar from "@/components/shared/Navbar";
 import { redirect } from "next/navigation";
-
+import Sidebar from "@/components/shared/Sidebar";
 export default async function RootLayout({ children }) {
   const sessionUser = await getServerSession(authOptions);
   if (!sessionUser) {

@@ -3,12 +3,23 @@ import React from "react";
 import { IoPricetag } from "react-icons/io5";
 import { IoMdCart } from "react-icons/io";
 import { BsFillHandbagFill } from "react-icons/bs";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import AddItemToCart from "@/components/shared/AddItemToCart";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { PiDotsThreeOutlineVerticalFill } from "react-icons/pi";
+import DeleteProduct from "@/components/shared/DeleteProduct";
+import Link from "next/link";
 
 const page = async ({ params: { id } }) => {
   const product = await getProductDetails(id);
@@ -19,9 +30,32 @@ const page = async ({ params: { id } }) => {
     <div className=" w-full bg-slate-50 p-6">
       <div className="flex items-start justify-evenly bg-white shadow rounded-md py-8">
         <div className=" flex flex-col items-start justify-center">
-          <h1 className="text-3xl font-bold text-primary capitalize w-full border-b pb-2 ">
-            {product.productName}
-          </h1>
+          {" "}
+          {user.user.role === "admin" ? (
+            <div className=" flex items-center justify-between  w-full">
+              <h1 className="text-3xl font-bold text-primary capitalize w-full border-b pb-2 ">
+                {product.productName}
+              </h1>
+              <DropdownMenu>
+                <DropdownMenuTrigger>
+                  <PiDotsThreeOutlineVerticalFill />
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuLabel>
+                    <Link href={`/e-shop/${id}/update`}>Update</Link>
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem>
+                    <DeleteProduct id={id} />
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+          ) : (
+            <h1 className="text-3xl font-bold text-primary capitalize w-full border-b pb-2 ">
+              {product.productName}
+            </h1>
+          )}
           <p className=" text-sm font-light text-slate-700 max-w-lg leading-relaxed my-3">
             {product.description} Lorem, ipsum dolor sit amet consectetur
             adipisicing elit. Velit porro facere totam suscipit obcaecati
@@ -50,12 +84,12 @@ const page = async ({ params: { id } }) => {
         </div>
         <div className=" flex items-start justify-start flex-col gap-3 border-2 border-primary  rounded-md p-3">
           <Image
-            src={"/heruo.png"}
+            src={product.imageurl || "/upload.svg"}
             alt="ok"
             width={100}
             height={100}
             priority
-            className=" w-72 h-72 border-b pb-6 object-contain object-center cursor-zoom-in "
+            className=" w-72 h-72 rounded-md border-b pb-6 object-contain object-center cursor-zoom-in "
           />
 
           <div className=" flex items-center justify-evenly w-full">
