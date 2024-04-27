@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { FaMinus, FaPlus } from "react-icons/fa";
 import { Button } from "../ui/button";
 import { socket } from "@/lib/AuthSession";
-import { finishMatch } from "@/lib/database/actions/match.actions";
+import { changeTurn, finishMatch } from "@/lib/database/actions/match.actions";
 import { toast } from "react-hot-toast";
 import { updateScores } from "@/lib/database/actions/match.actions";
 import {
@@ -13,25 +13,38 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+import { ColorRing } from "react-loader-spinner";
+import { updatePointable } from "@/lib/database/actions/pointable.action";
+
 const CricketScorecard = ({
   teamA,
   teamB,
   matchId,
   teamAScoreData,
   teamBScoreData,
+  turn,
 }) => {
-  const [overs, balls] = teamAScoreData.overs.toString().split(".");
+  console.log("🚀wwwweeeee ~ teamAScoreData:", teamAScoreData);
+  let overs = teamAScoreData.overs;
+  let balls = 0;
 
+  if (overs === 0) {
+    overs = 0;
+    balls = 0;
+  } else {
+    [overs, balls] = overs.toString().split(".");
+  }
   const [teamAScore, setTeamAScore] = useState(teamAScoreData.score);
   const [teamAWickets, setTeamAWickets] = useState(teamAScoreData.wickets);
   const [teamBScore, setTeamBScore] = useState(teamBScoreData.score);
   const [teamBWickets, setTeamBWickets] = useState(teamBScoreData.wickets);
-  const [currentTeam, setCurrentTeam] = useState(teamA);
+  const [currentTeam, setCurrentTeam] = useState(turn);
   const [currentTeamOver, setCurrentTeamOver] = useState(parseInt(overs));
   const [currentTeamBalls, setCurrentTeamBalls] = useState(parseInt(balls));
   const [extraScore, setExtraScore] = useState(0);
   const [isFinished, setIsFinished] = useState(false);
   const [winningTeam, setWinningTeam] = useState("");
+  const [isLoading, setisLoading] = useState(false);
 
   const [teamsData, setTeamsData] = useState({
     team1: {
@@ -113,9 +126,15 @@ const CricketScorecard = ({
 
   const handleSwitchTeam = () => {
     setCurrentTeam(currentTeam === teamA ? teamB : teamA);
+    toast.promise(changeTurn(matchId, currentTeam === teamA ? teamB : teamA), {
+      loading: "Switching team",
+      success: "Team switched",
+      error: "Error switching team",
+    });
+    socket.emit("teamTurn", currentTeam === teamA ? teamB : teamA);
+
     setCurrentTeamOver(0);
     setCurrentTeamBalls(0);
-    toast.success("team turn switched");
   };
 
   const handleExtraScore = (extra) => {
@@ -134,6 +153,16 @@ const CricketScorecard = ({
   updateScoresOfTeams(matchId, teamsData);
 
   socket.emit("cricketScore", teamsData);
+
+  const handleMatchFinish = async () => {
+    setisLoading(true);
+    await finishMatch(matchId, winningTeam);
+    socket.emit("matchFinish", winningTeam);
+    await updatePointable(teamA, teamB, winningTeam);
+    toast.success("Results saved");
+    setisLoading(false);
+    setIsFinished(true);
+  };
 
   return (
     <div className="bg-white w-full border-2 border-primary shadow p-4 m-3 rounded-lg flex flex-col items-center justify-center">
@@ -216,14 +245,21 @@ const CricketScorecard = ({
           <Button
             className="mt-6 mb-4 px-4 rounded-full"
             disabled={winningTeam === ""}
-            onClick={async () => {
-              await finishMatch(matchId, winningTeam);
-              socket.emit("matchFinish", winningTeam);
-              toast.success("Results saved");
-              setIsFinished(true);
-            }}
+            onClick={handleMatchFinish}
           >
-            Save Results
+            {isLoading ? (
+              <ColorRing
+                visible={true}
+                height="35"
+                width="35"
+                ariaLabel="color-ring-loading"
+                wrapperStyle={{}}
+                wrapperClass="color-ring-wrapper"
+                colors={["#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff"]}
+              />
+            ) : (
+              <span> Save Results</span>
+            )}{" "}
           </Button>
         </div>
       )}

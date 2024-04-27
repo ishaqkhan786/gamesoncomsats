@@ -1,15 +1,59 @@
 "use client";
 import React from "react";
-import { adminLinks } from "./Navlinks";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { MdDashboard } from "react-icons/md";
+import { GiDatabase } from "react-icons/gi";
+import { MdEmojiEvents } from "react-icons/md";
+import { BiSolidCricketBall } from "react-icons/bi";
+import { SiSecurityscorecard } from "react-icons/si";
+import { GiShoppingBag } from "react-icons/gi";
+
+const nonAdminLinks = [
+  {
+    text: "Home",
+    description: "Sports portal",
+    icon: <MdDashboard />,
+    href: "/",
+  },
+  {
+    text: "Equipments",
+    description: "book equipments",
+    icon: <GiDatabase />,
+    href: "/inventory",
+  },
+  {
+    text: "Events",
+    description: "Check events",
+    icon: <MdEmojiEvents />,
+    href: "/events",
+  },
+  {
+    text: "Playgrounds",
+    description: "Book grounds",
+    icon: <BiSolidCricketBall />,
+    href: "/ground",
+  },
+  {
+    text: "LiveScore",
+    description: "Score card and results",
+    icon: <SiSecurityscorecard />,
+    href: "/livescore",
+  },
+  {
+    text: "E Shop",
+    description: "Get exciting merchendise",
+    icon: <GiShoppingBag />,
+    href: "/e-shop",
+  },
+];
 
 const NonAdminNavlinks = ({ isScrolled }) => {
   const pathname = usePathname();
 
   return (
     <>
-      {adminLinks.map((link) => {
+      {nonAdminLinks.map((link) => {
         return (
           <div
             key={link.text}

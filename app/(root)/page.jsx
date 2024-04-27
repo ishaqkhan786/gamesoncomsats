@@ -82,9 +82,18 @@ export default async function Home() {
         </>
       ) : (
         <>
-          <h2 className=" text-2xl ml-2 md:text-3xl font-bold mb-1 px-6 mt-2 pt-4 w-full">
-            Welcome to Comsats Sports Portal
-          </h2>
+          <div className=" flex flex-col md:flex-row items-center justify-between w-full md:pr-12">
+            <h2 className=" text-2xl ml-2 md:text-3xl font-bold mb-1 px-6 mt-2 pt-4 w-full">
+              Welcome to Comsats Sports Portal
+            </h2>
+            <Link
+              href={"/feedback"}
+              className="text-lg text-nowrap font-semibold pt-4 text-primary-500 hover:underline cursor-pointer"
+            >
+              Give Feedback
+            </Link>
+          </div>
+
           <div className="w-[95%] mx-auto py-12 rounded-md bg-gradient-to-tl from-blue-950 to-blue-700 my-6 flex flex-col-reverse gap-4 md:flex-row px-4 lg:px-0 items-center justify-evenly">
             <div className="flex flex-col justify-center rounded-md shadow space-y-4 h-full items-center px-8 py-4 gap-3">
               <p className="max-w-lg text-lg text-white border-b mt-6 pb-4">

@@ -4,11 +4,14 @@ import { useState, useEffect } from "react";
 import { CgMediaLive } from "react-icons/cg";
 import { socket } from "@/lib/AuthSession";
 import { useRouter } from "next/navigation";
+import { GiAmericanFootballHelmet } from "react-icons/gi";
+import { FaBaseball } from "react-icons/fa6";
 
 const LiveScore = ({ matchData }) => {
-  const router = useRouter();
+  console.log("🚀 ~ LiveScore ~ matchData:", matchData);
 
   const [isMatchStarted, setIsMatchStarted] = useState(true);
+  const [turn, setTurn] = useState(matchData.teamTurn);
   const [isFinished, setIsFinished] = useState(false);
   const [winnigTeam, setwinnigTeam] = useState("");
   const [sportsType, setSportsType] = useState(matchData.sportsType);
@@ -52,6 +55,9 @@ const LiveScore = ({ matchData }) => {
     setIsFinished(true);
     setwinnigTeam(team);
   });
+  socket.on("teamTurn", (team) => {
+    setTurn(team);
+  });
 
   const today = new Date();
   const year = today.getFullYear();
@@ -85,8 +91,16 @@ const LiveScore = ({ matchData }) => {
                   className="flex flex-col gap-3
                  items-center justify-center"
                 >
-                  <h2 className="text-2xl font-bold text-primary">
-                    {teamA} Score
+                  <h2 className=" text-xl md:text-2xl font-bold text-primary inline-flex items-center">
+                    {teamA} Score{" "}
+                    <span>
+                      {" "}
+                      {turn === teamA ? (
+                        <GiAmericanFootballHelmet className=" text-black ml-2" />
+                      ) : (
+                        <FaBaseball className=" text-black ml-2" />
+                      )}
+                    </span>
                   </h2>
                   <p className="text-lg text-slate-700">
                     {teamAScore} / {teamAWickets}
@@ -103,8 +117,16 @@ const LiveScore = ({ matchData }) => {
                   className="flex flex-col gap-3
                  items-center justify-center"
                 >
-                  <h2 className="text-2xl font-bold text-primary">
-                    {teamB} Score
+                  <h2 className="text-2xl font-bold inline-flex items-center text-primary">
+                    {teamB} Score{" "}
+                    <span>
+                      {" "}
+                      {turn === teamB ? (
+                        <GiAmericanFootballHelmet className=" text-black ml-2" />
+                      ) : (
+                        <FaBaseball className=" text-black ml-2" />
+                      )}
+                    </span>
                   </h2>
                   <p className="text-lg text-slate-700">
                     {teamBScore} / {teamBWickets}
@@ -160,25 +182,9 @@ const LiveScore = ({ matchData }) => {
               </div>
             )}
 
-            {isFinished ? (
-              winnigTeam === "tied" ? (
-                <p className=" w-full text-center italic text-sm font-thin text-slate-500 mb-5">
-                  Match Tied
-                </p>
-              ) : (
-                <p className=" w-full text-center italic text-sm font-thin text-slate-500 mb-5">
-                  <span className="font-bold text-lg capitalize mr-1 text-primary-500">
-                    {" "}
-                    {winnigTeam}
-                  </span>{" "}
-                  won the match
-                </p>
-              )
-            ) : (
-              <p className=" w-full text-center text-sm font-thin text-slate-500 mb-5">
-                score is being managed by the umpires in realtime
-              </p>
-            )}
+            <p className=" w-full text-center text-sm font-thin text-slate-500 mb-5">
+              score is being managed by the umpires in realtime
+            </p>
           </div>
         </div>
       ) : (

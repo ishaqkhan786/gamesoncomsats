@@ -20,6 +20,7 @@ import { useRouter } from "next/navigation";
 import LiveScore from "./LiveScore";
 import BasketballScorecard from "./BasketballScorecard";
 const page = ({ events, matches }) => {
+  console.log("🚀 ~ page ~ matches:", matches);
   const session = useSession();
   const router = useRouter();
   const [sportsType, setSportsType] = useState("");
@@ -28,7 +29,7 @@ const page = ({ events, matches }) => {
   const [secondTeam, setSecondTeam] = useState("");
   const [matchStarted, setMatchStarted] = useState(false);
   const [matchId, setMatchId] = useState("");
-
+  const [teamTurn, setteamTurn] = useState("");
   socket.on("matchStart", () => {
     console.log("match started");
   });
@@ -37,7 +38,8 @@ const page = ({ events, matches }) => {
     console.log("match finished");
   });
 
-  console.log("selectedEvent", selectedEvent);
+  console.log(teamTurn);
+
   return (
     <>
       {session.data && session.data.user.role === "admin" && (
@@ -108,14 +110,6 @@ const page = ({ events, matches }) => {
                         ))}
                       </SelectContent>
                     </Select>
-                    {/* <Input
-                      placeholder="teamname"
-                      className="bg-slate-50 text-sm  rounded-lg"
-                      htmlFor="first"
-                      onChange={(v) => {
-                        setFirstTeam(v.target.value);
-                      }}
-                    /> */}
                   </div>
                   <div className="flex flex-col justify-start items-start">
                     <label
@@ -136,15 +130,32 @@ const page = ({ events, matches }) => {
                         ))}
                       </SelectContent>
                     </Select>
-                    {/* <Input
-                      placeholder="teamname"
-                      className="bg-slate-50 text-sm  rounded-lg"
-                      htmlFor="second"
-                      onChange={(v) => {
-                        setSecondTeam(v.target.value);
-                      }}
-                    /> */}
                   </div>
+                  {sportsType === "cricket" &&
+                    firstTeam !== "" &&
+                    secondTeam !== "" && (
+                      <div className="flex flex-col justify-start items-start">
+                        <label
+                          htmlFor="second"
+                          className=" font-semibold text-sm  ml-1 mb-1"
+                        >
+                          Team Turn:
+                        </label>
+                        <Select onValueChange={(v) => setteamTurn(v)}>
+                          <SelectTrigger className=" bg-slate-50 text-sm w-52  rounded-lg">
+                            <SelectValue placeholder="batting team" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value={firstTeam}>
+                              {firstTeam}
+                            </SelectItem>
+                            <SelectItem value={secondTeam}>
+                              {secondTeam}
+                            </SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    )}
                 </div>
                 {firstTeam === "" || secondTeam === "" || sportsType === "" ? (
                   <Button
@@ -167,13 +178,14 @@ const page = ({ events, matches }) => {
                         teamAScoreData: {
                           score: 0,
                           wickets: 0,
-                          overs: 0,
+                          overs: 0.0,
                         },
                         teamBScoreData: {
                           score: 0,
                           wickets: 0,
                           overs: 0,
                         },
+                        teamTurn: teamTurn,
                       });
                       setMatchId(matchData._id);
                       socket.emit("matchStart", {
@@ -232,6 +244,7 @@ const page = ({ events, matches }) => {
                   matchId={match._id}
                   teamAScoreData={match.teamAScoreData}
                   teamBScoreData={match.teamBScoreData}
+                  turn={match.teamTurn}
                 />
               );
             }
@@ -239,7 +252,7 @@ const page = ({ events, matches }) => {
         </div>
       )}
 
-      {matches ? (
+      {matches.length !== 0 ? (
         matches.map((match) => <LiveScore key={match._id} matchData={match} />)
       ) : (
         <div className="w-full flex items-center justify-center p-4 mt-6 ">

@@ -11,6 +11,7 @@ import toast from "react-hot-toast";
 import { createNewOrder } from "@/lib/database/actions/order.action";
 import { useRouter } from "next/navigation";
 import { delteCartofUser } from "@/lib/database/actions/cart.action";
+import StripePayment from "./StripePayment";
 const Checkout = ({ cart, userDetails, userId }) => {
   const [totalPrice, setTotalPrice] = useState(0);
   const [selectedAddress, setselectedAddress] = useState("");
@@ -26,15 +27,23 @@ const Checkout = ({ cart, userDetails, userId }) => {
     setTotalPrice(total);
   }, [cart]);
 
+  const data = {
+    totalAmount: totalPrice,
+    totalQuantity: cart.length,
+    items: [...cart], // Extracting only the _id fields
+    user: userId,
+    selectedAddress,
+    paymentMethod,
+  };
   const placeOrder = async () => {
-    const data = {
-      totalAmount: totalPrice,
-      totalQuantity: cart.length,
-      items: [...cart], // Extracting only the _id fields
-      user: userId,
-      selectedAddress,
-      paymentMethod,
-    };
+    // const data = {
+    //   totalAmount: totalPrice,
+    //   totalQuantity: cart.length,
+    //   items: [...cart], // Extracting only the _id fields
+    //   user: userId,
+    //   selectedAddress,
+    //   paymentMethod,
+    // };
     console.log(data);
     await delteCartofUser(userId);
     toast.promise(createNewOrder(data), {
@@ -148,13 +157,17 @@ const Checkout = ({ cart, userDetails, userId }) => {
                     {selectedAddress === "" ? "none selected" : selectedAddress}
                   </span>
                 </div>
-                <Button
-                  onClick={placeOrder}
-                  disabled={selectedAddress === "" || paymentMethod === ""}
-                  className=" bg-slate-200 text-slate-600 mb-6 hover:bg-slate-300 hover:text-slate-700"
-                >
-                  Place Order
-                </Button>
+                {paymentMethod === "" || paymentMethod === "cash" ? (
+                  <Button
+                    onClick={placeOrder}
+                    disabled={selectedAddress === "" || paymentMethod === ""}
+                    className=" bg-slate-200 text-slate-600 mb-6 hover:bg-slate-300 hover:text-slate-700"
+                  >
+                    Place Order
+                  </Button>
+                ) : (
+                  <StripePayment data={data} userId={userId} />
+                )}
               </div>
             </div>
           </div>

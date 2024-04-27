@@ -8,6 +8,7 @@ import { usePathname } from "next/navigation";
 import { BiSolidCricketBall } from "react-icons/bi";
 import { SiSecurityscorecard } from "react-icons/si";
 import { GiShoppingBag } from "react-icons/gi";
+import { RiFeedbackFill } from "react-icons/ri";
 
 import Link from "next/link";
 
@@ -47,6 +48,12 @@ export const adminLinks = [
     description: "Get exciting merchendise",
     icon: <GiShoppingBag />,
     href: "/e-shop",
+  },
+  {
+    text: "Feedback",
+    description: "Check reviews",
+    icon: <RiFeedbackFill />,
+    href: "/feedback/admin",
   },
 ];
 

@@ -8,6 +8,7 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import RemoveEvent from "@/components/shared/RemoveEvent";
+import { MdArrowOutward } from "react-icons/md";
 
 const page = async () => {
   const session = await getServerSession(authOptions);
@@ -112,9 +113,18 @@ const page = async () => {
                   className="flex flex-col items-start 
                                      justify-center"
                 >
-                  <h2 className="font-bold mb-2 text-2xl text-primary-500">
-                    {event.eventName}
-                  </h2>
+                  <div className=" flex flex-col md:flex-row items-center justify-center gap-4">
+                    <h2 className="font-bold mb-2 text-2xl text-primary-500">
+                      {event.eventName}
+                    </h2>
+                    <Link
+                      className=" inline-flex gap-1 bg-blue-50 px-4 py-1 rounded-md shadow-sm mb-1 items-center justify-center"
+                      href={`/events/${event._id}/pointable`}
+                    >
+                      Points Table <MdArrowOutward />
+                    </Link>
+                  </div>
+
                   <p className="text-slate-600 font-medium text-sm inline-flex -ml-1">
                     <MdDateRange className="mt-0.5 mr-1 " />
                     {eventDate.toDateString()}

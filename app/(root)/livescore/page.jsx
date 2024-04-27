@@ -5,7 +5,6 @@ const page = async () => {
   const events = await getAllEvents();
   //   console.log(events);
   const matches = await getOngoingMatchDetails();
-  console.log("🚀 ~ page ~ matches:", matches);
   return (
     <>
       <Scorecard events={events} matches={matches} />

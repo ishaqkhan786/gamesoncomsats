@@ -43,4 +43,8 @@ io.on("connection", (socket) => {
         console.log('match Finished with team win of', winningTeam);
         io.emit('matchFinish', winningTeam)
     })
+    socket.on('teamTurn', (turn) => {
+        console.log('team turn of: ', turn);
+        io.emit('teamTurn', turn)
+    })
 })

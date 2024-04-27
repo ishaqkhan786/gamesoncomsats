@@ -18,6 +18,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { ColorRing } from "react-loader-spinner";
+import { updatePointable } from "@/lib/database/actions/pointable.action";
+
 const BasketballScorecard = ({
   sportsType,
   teamA,
@@ -31,7 +34,7 @@ const BasketballScorecard = ({
   const [isFinished, setIsFinished] = useState(false);
   const [winningTeam, setWinningTeam] = useState("");
   const router = useRouter();
-
+  const [isLoading, setisLoading] = useState(false);
   // if (isFinished) {
   //     toast.success('Results saved!')
   //     router.push('/')
@@ -41,6 +44,16 @@ const BasketballScorecard = ({
   const year = today.getFullYear();
   const month = today.getMonth() + 1; // Month is zero-indexed, so add 1
   const day = today.getDate();
+
+  const handleMatchFinish = async () => {
+    setisLoading(true);
+    await finishMatch(matchId, winningTeam);
+    socket.emit("matchFinish", winningTeam);
+    await updatePointable(teamA, teamB, winningTeam);
+    toast.success("Results saved");
+    setisLoading(false);
+    setIsFinished(true);
+  };
 
   return (
     <div className="bg-white border-2 border-primary shadow w-full p-4 m-3 rounded-lg flex flex-col items-center justify-center">
@@ -161,14 +174,21 @@ const BasketballScorecard = ({
         <Button
           className="mt-6 mb-4 px-4 rounded-full"
           disabled={winningTeam === ""}
-          onClick={async () => {
-            await finishMatch(matchId, winningTeam);
-            socket.emit("matchFinish", winningTeam);
-            toast.success("Results saved");
-            setIsFinished(true);
-          }}
+          onClick={handleMatchFinish}
         >
-          Save Results
+          {isLoading ? (
+            <ColorRing
+              visible={true}
+              height="35"
+              width="35"
+              ariaLabel="color-ring-loading"
+              wrapperStyle={{}}
+              wrapperClass="color-ring-wrapper"
+              colors={["#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff"]}
+            />
+          ) : (
+            <span> Save Results</span>
+          )}
         </Button>
       )}
     </div>
