@@ -106,20 +106,20 @@ export default function ProfileForm() {
           </Link>
         </button>
       </div>
-      <div className="flex items-center justify-center  my-8  overflow-hidden  w-full rounded-md">
+      <div className="flex items-center justify-center h-[36.5rem]   my-8  overflow-hidden  w-full rounded-md">
         <Image
-          src={"/pingpong.jpg"}
+          src={"/cover.jpg"}
           alt="ping"
-          width={412}
+          width={340}
           height={100}
-          className=" object-conver h-full rounded hidden md:block "
+          className=" object-cover object-center rounded hidden md:block "
         />
         <div className=" h-full">
           <Form {...form}>
             <div
               id="first"
-              className="flex flex-col items-center rounded bg-white w-[18rem] sm:w-[26rem] mt-3 px-8 pt-6 
-              pb-16 mb-2 space-y-5"
+              className="flex flex-col items-center rounded bg-white w-[18rem] sm:w-[26rem]  px-8 pt-6 
+              pb-16  space-y-5"
             >
               <Image src={"/comsats.png"} alt="logo" width={100} height={50} />
 

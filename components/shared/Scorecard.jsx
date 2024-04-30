@@ -20,7 +20,6 @@ import { useRouter } from "next/navigation";
 import LiveScore from "./LiveScore";
 import BasketballScorecard from "./BasketballScorecard";
 const page = ({ events, matches }) => {
-  console.log("🚀 ~ page ~ matches:", matches);
   const session = useSession();
   const router = useRouter();
   const [sportsType, setSportsType] = useState("");
@@ -30,6 +29,9 @@ const page = ({ events, matches }) => {
   const [matchStarted, setMatchStarted] = useState(false);
   const [matchId, setMatchId] = useState("");
   const [teamTurn, setteamTurn] = useState("");
+  const [totalOvers, setTotalOvers] = useState(0);
+
+  console.log(totalOvers);
   socket.on("matchStart", () => {
     console.log("match started");
   });
@@ -37,8 +39,6 @@ const page = ({ events, matches }) => {
   socket.on("matchFinish", () => {
     console.log("match finished");
   });
-
-  console.log(teamTurn);
 
   return (
     <>
@@ -90,70 +90,96 @@ const page = ({ events, matches }) => {
                     </SelectContent>
                   </Select>
                 </div>
-                <div className=" flex flex-col lg:flex-row w-full gap-8 items-center justify-evenly">
-                  <div className="flex flex-col justify-start items-start">
-                    <label
-                      htmlFor="first"
-                      className=" font-semibold text-sm  ml-1 mb-1"
-                    >
-                      First Team Name:
-                    </label>
-                    <Select onValueChange={(v) => setFirstTeam(v)}>
-                      <SelectTrigger className=" bg-slate-50 text-sm w-52  rounded-lg">
-                        <SelectValue placeholder="First Team" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {selectedEvent.teams.map((team) => (
-                          <SelectItem key={team.teamName} value={team.teamName}>
-                            {team.teamName}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div className="flex flex-col justify-start items-start">
-                    <label
-                      htmlFor="second"
-                      className=" font-semibold text-sm  ml-1 mb-1"
-                    >
-                      Second Team Name:
-                    </label>
-                    <Select onValueChange={(v) => setSecondTeam(v)}>
-                      <SelectTrigger className=" bg-slate-50 text-sm w-52  rounded-lg">
-                        <SelectValue placeholder="Second Team" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {selectedEvent.teams.map((team) => (
-                          <SelectItem key={team.teamName} value={team.teamName}>
-                            {team.teamName}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                <div className=" flex flex-col w-full gap-8 items-center justify-evenly">
+                  <div className=" flex items-center justify-evenly w-full gap-4">
+                    <div className="flex flex-col justify-start items-start">
+                      <label
+                        htmlFor="first"
+                        className=" font-semibold text-sm  ml-1 mb-1"
+                      >
+                        First Team Name:
+                      </label>
+                      <Select onValueChange={(v) => setFirstTeam(v)}>
+                        <SelectTrigger className=" bg-slate-50 text-sm w-52  rounded-lg">
+                          <SelectValue placeholder="First Team" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {selectedEvent.teams.map((team) => (
+                            <SelectItem
+                              key={team.teamName}
+                              value={team.teamName}
+                            >
+                              {team.teamName}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="flex flex-col justify-start items-start">
+                      <label
+                        htmlFor="second"
+                        className=" font-semibold text-sm  ml-1 mb-1"
+                      >
+                        Second Team Name:
+                      </label>
+                      <Select onValueChange={(v) => setSecondTeam(v)}>
+                        <SelectTrigger className=" bg-slate-50 text-sm w-52  rounded-lg">
+                          <SelectValue placeholder="Second Team" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {selectedEvent.teams.map((team) => (
+                            <SelectItem
+                              key={team.teamName}
+                              value={team.teamName}
+                            >
+                              {team.teamName}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
                   </div>
                   {sportsType === "cricket" &&
                     firstTeam !== "" &&
                     secondTeam !== "" && (
-                      <div className="flex flex-col justify-start items-start">
-                        <label
-                          htmlFor="second"
-                          className=" font-semibold text-sm  ml-1 mb-1"
-                        >
-                          Team Turn:
-                        </label>
-                        <Select onValueChange={(v) => setteamTurn(v)}>
-                          <SelectTrigger className=" bg-slate-50 text-sm w-52  rounded-lg">
-                            <SelectValue placeholder="batting team" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value={firstTeam}>
-                              {firstTeam}
-                            </SelectItem>
-                            <SelectItem value={secondTeam}>
-                              {secondTeam}
-                            </SelectItem>
-                          </SelectContent>
-                        </Select>
+                      <div className=" flex items-center justify-evenly w-full gap-4">
+                        <div className="flex flex-col justify-start items-start">
+                          <label
+                            htmlFor="second"
+                            className=" font-semibold text-sm  ml-1 mb-1"
+                          >
+                            Team Turn:
+                          </label>
+                          <Select onValueChange={(v) => setteamTurn(v)}>
+                            <SelectTrigger className=" bg-slate-50 text-sm w-52  rounded-lg">
+                              <SelectValue placeholder="batting team" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value={firstTeam}>
+                                {firstTeam}
+                              </SelectItem>
+                              <SelectItem value={secondTeam}>
+                                {secondTeam}
+                              </SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        <div className="flex flex-col justify-start items-start">
+                          <label
+                            htmlFor="second"
+                            className=" font-semibold text-sm  ml-1 mb-1"
+                          >
+                            Team Turn:
+                          </label>
+                          <Input
+                            type="number"
+                            placeholder="Total Overs"
+                            className="bg-slate-50 text-sm text-slate-700 "
+                            onChange={(e) => {
+                              setTotalOvers(e.target.value);
+                            }}
+                          />
+                        </div>
                       </div>
                     )}
                 </div>
@@ -186,6 +212,7 @@ const page = ({ events, matches }) => {
                           overs: 0,
                         },
                         teamTurn: teamTurn,
+                        totalOvers,
                       });
                       setMatchId(matchData._id);
                       socket.emit("matchStart", {
@@ -230,8 +257,8 @@ const page = ({ events, matches }) => {
                   teamA={match.teamA}
                   teamB={match.teamB}
                   matchId={match._id}
-                  teamAGoal={match.teamAGoal}
-                  teamBGoals={match.teamBGoals}
+                  teamAGoal={match.teamAPoints}
+                  teamBGoals={match.teamBPoints}
                 />
               );
             }
@@ -245,6 +272,7 @@ const page = ({ events, matches }) => {
                   teamAScoreData={match.teamAScoreData}
                   teamBScoreData={match.teamBScoreData}
                   turn={match.teamTurn}
+                  totalOvers={match.totalOvers}
                 />
               );
             }

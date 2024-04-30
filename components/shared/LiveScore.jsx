@@ -8,8 +8,6 @@ import { GiAmericanFootballHelmet } from "react-icons/gi";
 import { FaBaseball } from "react-icons/fa6";
 
 const LiveScore = ({ matchData }) => {
-  console.log("🚀 ~ LiveScore ~ matchData:", matchData);
-
   const [isMatchStarted, setIsMatchStarted] = useState(true);
   const [turn, setTurn] = useState(matchData.teamTurn);
   const [isFinished, setIsFinished] = useState(false);
@@ -18,11 +16,9 @@ const LiveScore = ({ matchData }) => {
   const [teamA, setTeamA] = useState(matchData.teamA);
   const [teamB, setTeamB] = useState(matchData.teamB);
   const [team1Goals, setTeam1Goals] = useState(matchData.teamAGoal);
-  const [team1Point, setTeam1Point] = useState(0);
-  console.log("🚀 ~ LiveScore ~ team1Point:", team1Point);
+  const [team1Point, setTeam1Point] = useState(matchData.teamAPoints || 0);
   const [team2Goals, setTeam2Goals] = useState(matchData.teamBGoals || 0);
-  const [team2Point, setTeam2Point] = useState(0);
-  console.log("🚀 ~ LiveScore ~ team2Point:", team2Point);
+  const [team2Point, setTeam2Point] = useState(matchData.teamBPoints || 0);
   const [teamAScore, setTeamAScore] = useState(matchData.teamAScoreData.score);
   const [teamAWickets, setTeamAWickets] = useState(
     matchData.teamAScoreData.wickets
@@ -110,7 +106,7 @@ const LiveScore = ({ matchData }) => {
                 <div className="flex items-center justify-center gap-2 flex-col">
                   <p className="text-lg font-bold text-black">Overs</p>
                   <span className="text-sm font-semibold text-slate-600">
-                    {overs}
+                    {overs} / {matchData.totalOvers}
                   </span>
                 </div>
                 <div

@@ -3,7 +3,6 @@ import { getAllEvents } from "@/lib/database/actions/event.actions";
 import { getOngoingMatchDetails } from "@/lib/database/actions/match.actions";
 const page = async () => {
   const events = await getAllEvents();
-  //   console.log(events);
   const matches = await getOngoingMatchDetails();
   return (
     <>

@@ -23,8 +23,8 @@ const CricketScorecard = ({
   teamAScoreData,
   teamBScoreData,
   turn,
+  totalOvers,
 }) => {
-  console.log("🚀wwwweeeee ~ teamAScoreData:", teamAScoreData);
   let overs = teamAScoreData.overs;
   let balls = 0;
 
@@ -34,6 +34,8 @@ const CricketScorecard = ({
   } else {
     [overs, balls] = overs.toString().split(".");
   }
+
+  const [totalOversData, setTotalOversData] = useState(totalOvers);
   const [teamAScore, setTeamAScore] = useState(teamAScoreData.score);
   const [teamAWickets, setTeamAWickets] = useState(teamAScoreData.wickets);
   const [teamBScore, setTeamBScore] = useState(teamBScoreData.score);
@@ -127,9 +129,9 @@ const CricketScorecard = ({
   const handleSwitchTeam = () => {
     setCurrentTeam(currentTeam === teamA ? teamB : teamA);
     toast.promise(changeTurn(matchId, currentTeam === teamA ? teamB : teamA), {
-      loading: "Switching team",
-      success: "Team switched",
-      error: "Error switching team",
+      loading: "Switching teams...",
+      success: "Teams switched",
+      error: "Error switching teams",
     });
     socket.emit("teamTurn", currentTeam === teamA ? teamB : teamA);
 
@@ -146,7 +148,6 @@ const CricketScorecard = ({
   };
 
   const updateScoresOfTeams = async (id, data) => {
-    console.log("hehe", data);
     await updateScores(id, data);
   };
 
@@ -170,28 +171,30 @@ const CricketScorecard = ({
       <h3 className="text-xl font-semibold mb-2 bg-blue-50 px-8 rounded-full italic text-primary py-0.5">
         {currentTeam} Batting
       </h3>
-      <div className="flex flex-wrap max-w-xl items-center justify-center mt-3 gap-4 mb-6">
-        <Button onClick={() => handleRuns(1)}>
-          <FaPlus className="mr-2" /> 1 Run
-        </Button>
-        <Button onClick={() => handleRuns(2)}>
-          <FaPlus className="mr-2" /> 2 Runs
-        </Button>
-        <Button onClick={() => handleRuns(3)}>
-          <FaPlus className="mr-2" /> 3 Runs
-        </Button>
-        <Button onClick={() => handleRuns(4)}>
-          <FaPlus className="mr-2" /> 4 Runs
-        </Button>
-        <Button onClick={() => handleRuns(6)}>
-          <FaPlus className="mr-2" /> 6 Runs
-        </Button>
-        <Button className="bg-red-600" onClick={handleWicket}>
-          <FaMinus className="mr-2" /> Wicket
-        </Button>
-        <Button onClick={() => handleExtraScore(1)}>+1 Extra</Button>
-        <Button onClick={() => handleExtraScore(2)}>+2 Extra</Button>
-      </div>
+      {totalOversData > currentTeamOver + currentTeamBalls / 10 && (
+        <div className="flex flex-wrap max-w-xl items-center justify-center mt-3 gap-4 mb-6">
+          <Button onClick={() => handleRuns(1)}>
+            <FaPlus className="mr-2" /> 1 Run
+          </Button>
+          <Button onClick={() => handleRuns(2)}>
+            <FaPlus className="mr-2" /> 2 Runs
+          </Button>
+          <Button onClick={() => handleRuns(3)}>
+            <FaPlus className="mr-2" /> 3 Runs
+          </Button>
+          <Button onClick={() => handleRuns(4)}>
+            <FaPlus className="mr-2" /> 4 Runs
+          </Button>
+          <Button onClick={() => handleRuns(6)}>
+            <FaPlus className="mr-2" /> 6 Runs
+          </Button>
+          <Button className="bg-red-600" onClick={handleWicket}>
+            <FaMinus className="mr-2" /> Wicket
+          </Button>
+          <Button onClick={() => handleExtraScore(1)}>+1 Extra</Button>
+          <Button onClick={() => handleExtraScore(2)}>+2 Extra</Button>
+        </div>
+      )}
       <div className="text-lg mt-6 flex flex-col md:flex-row items-center justify-evenly w-full font-semibold">
         <div className="flex flex-col gap-3 items-center justify-center">
           <h2 className="text-2xl font-bold text-primary capitalize">
@@ -204,7 +207,7 @@ const CricketScorecard = ({
                         onClick={() => resetScores(teamA)}>Reset score</button> */}
         </div>
         <p className="text-lg text-slate-700">
-          Overs: {teamsData.team1.overs.toFixed(1)}
+          Overs: {teamsData.team1.overs.toFixed(1)}/{totalOversData}
         </p>
         <div className="flex flex-col gap-3 items-center justify-center">
           <h2 className="text-2xl font-bold text-primary capitalize">

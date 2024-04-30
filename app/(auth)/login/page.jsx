@@ -83,13 +83,13 @@ export default function ProfileForm() {
           </Link>
         </button>
       </div>
-      <div className="flex items-center justify-center shadow-md my-6  bg-gray-800 max-h-[80%]  overflow-hidden  w-full rounded">
+      <div className="flex items-center justify-center shadow-md my-6  bg-gray-800 h-[33rem] overflow-hidden  w-full rounded">
         <Image
-          src={"/pingpong.jpg"}
+          src={"/cover.jpg"}
           alt="ping"
           width={340}
-          height={100}
-          className="  object-center object-fill hidden md:block "
+          height={50}
+          className="  object-cover object-center hidden md:block shadow "
         />
         <div className=" h-full">
           <Form {...form}>

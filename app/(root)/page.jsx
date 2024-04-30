@@ -160,7 +160,7 @@ export default async function Home() {
                       height={50}
                       alt="team"
                     />
-                    <h2 className=" font-semibold text-xl  text-center">
+                    <h2 className=" font-semibold text-lg  text-center">
                       {match.teamA}
                     </h2>
                   </div>
@@ -179,7 +179,7 @@ export default async function Home() {
                       height={50}
                       alt="team"
                     />
-                    <h2 className=" font-semibold text-xl text-center">
+                    <h2 className=" font-semibold text-lg text-center">
                       {match.teamB}
                     </h2>
                   </div>{" "}
