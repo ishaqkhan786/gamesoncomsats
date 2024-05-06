@@ -47,8 +47,8 @@ export default function ProfileForm() {
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: "asfarma2815@gmail.com",
-      password: "asfarasfar",
+      email: "fizza123@gmail.com",
+      password: "fizza123",
     },
   });
 
