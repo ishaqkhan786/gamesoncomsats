@@ -20,12 +20,14 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { PiDotsThreeOutlineVerticalFill } from "react-icons/pi";
 import DeleteProduct from "@/components/shared/DeleteProduct";
 import Link from "next/link";
+import BuyNow from "@/components/shared/BuyNow";
 
 const page = async ({ params: { id } }) => {
   const product = await getProductDetails(id);
   const user = await getServerSession(authOptions);
   const userId = user.user.id.toString();
   console.log(product);
+
   return (
     <div className=" w-full bg-slate-50 p-6">
       <div className="flex items-start justify-evenly bg-white shadow rounded-md py-8">
@@ -74,12 +76,7 @@ const page = async ({ params: { id } }) => {
           </p>
           <div className=" flex flex-col md:flex-row items-center justify-center gap-4 my-6">
             <AddItemToCart userId={userId} productId={id} />
-
-            <Button className=" font-semibold bg-white hover:text-white text-primary border-2 border-primary text-lg px-8 rounded-full py-1">
-              {" "}
-              <BsFillHandbagFill className=" text-xl mr-2" />
-              Buy Now
-            </Button>
+            <BuyNow id={id} userId={userId} />
           </div>
         </div>
         <div className=" flex items-start justify-start flex-col gap-3 border-2 border-primary  rounded-md p-3">
