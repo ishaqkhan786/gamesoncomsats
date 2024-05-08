@@ -157,7 +157,11 @@ const Checkout = ({ cart, userDetails, userId }) => {
                     {selectedAddress === "" ? "none selected" : selectedAddress}
                   </span>
                 </div>
-                {paymentMethod === "" || paymentMethod === "cash" ? (
+                {cart.length === 0 ? (
+                  <p className=" font-semibold pb-4 text-red-600">
+                    Please add items to cart
+                  </p>
+                ) : paymentMethod === "" || paymentMethod === "cash" ? (
                   <Button
                     onClick={placeOrder}
                     disabled={selectedAddress === "" || paymentMethod === ""}

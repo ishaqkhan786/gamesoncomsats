@@ -22,7 +22,7 @@ const AddItemToCart = ({ userId, productId }) => {
       error: "errrorrr",
     });
     setitemAdded(true);
-    router.push("/e-shop");
+    router.refresh();
     console.log(data);
   };
   return (
