@@ -81,7 +81,7 @@ const Navbar = ({ user }) => {
               <SheetDescription className="">
                 <div className="flex  text-center flex-col-reverse gap-2 md:flex-row md:justify-between items-center justify-center text-slate-500">
                   <p className="text-xs font-semibold text-primary-100">
-                    @2024 Asfar Munir Asfi.{" "}
+                    @2024 Muhammad Ishaq, Fizza Ali.{" "}<br/>
                     <span className="font-normal text-slate-500">
                       All Rights Reserved
                     </span>
