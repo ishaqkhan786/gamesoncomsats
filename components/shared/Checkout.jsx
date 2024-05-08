@@ -13,6 +13,7 @@ import { useRouter } from "next/navigation";
 import { delteCartofUser } from "@/lib/database/actions/cart.action";
 import StripePayment from "./StripePayment";
 const Checkout = ({ cart, userDetails, userId }) => {
+  console.log("🚀 ~ Checkout ~ userDetails:", userDetails);
   const [totalPrice, setTotalPrice] = useState(0);
   const [selectedAddress, setselectedAddress] = useState("");
   const [paymentMethod, setpaymentMethod] = useState("");
@@ -36,14 +37,6 @@ const Checkout = ({ cart, userDetails, userId }) => {
     paymentMethod,
   };
   const placeOrder = async () => {
-    // const data = {
-    //   totalAmount: totalPrice,
-    //   totalQuantity: cart.length,
-    //   items: [...cart], // Extracting only the _id fields
-    //   user: userId,
-    //   selectedAddress,
-    //   paymentMethod,
-    // };
     console.log(data);
     await delteCartofUser(userId);
     toast.promise(createNewOrder(data), {
@@ -138,6 +131,10 @@ const Checkout = ({ cart, userDetails, userId }) => {
                   Order reciept
                 </h1>
                 <div className=" flex items-center justify-between w-full my-1 mt-3">
+                  <p className=" font-semibold">Customer Name:</p>
+                  <span>{userDetails.username} </span>
+                </div>
+                <div className=" flex items-center justify-between w-full my-1">
                   <p className=" font-semibold">Total Items:</p>
                   <span>{cart.length} Items</span>
                 </div>

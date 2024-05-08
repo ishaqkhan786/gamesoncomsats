@@ -28,8 +28,8 @@ const page = ({ events, matches }) => {
   const [secondTeam, setSecondTeam] = useState("");
   const [matchStarted, setMatchStarted] = useState(false);
   const [matchId, setMatchId] = useState("");
-  const [teamTurn, setteamTurn] = useState("");
-  const [totalOvers, setTotalOvers] = useState(0);
+  const [teamTurn, setteamTurn] = useState(firstTeam);
+  const [totalOvers, setTotalOvers] = useState(5);
 
   console.log(totalOvers);
   socket.on("matchStart", () => {
@@ -51,7 +51,7 @@ const page = ({ events, matches }) => {
             <div className="flex flex-col lg:flex-row w-full items-center justify-evenly">
               <div className="flex items-start justify-center flex-col rounded-xl p-4">
                 <h2 className="text-3xl font-bold caption-top">Scoreboard</h2>
-                <p>Select the sports type for relevent scorecard</p>
+                <p>Select the event for relevent scorecard</p>
               </div>
               <div>
                 <Select onValueChange={(v) => setSelectedEvent(v)}>
@@ -104,14 +104,16 @@ const page = ({ events, matches }) => {
                           <SelectValue placeholder="First Team" />
                         </SelectTrigger>
                         <SelectContent>
-                          {selectedEvent.teams.map((team) => (
-                            <SelectItem
-                              key={team.teamName}
-                              value={team.teamName}
-                            >
-                              {team.teamName}
-                            </SelectItem>
-                          ))}
+                          {selectedEvent.teams
+                            .filter((team) => team.teamName !== secondTeam)
+                            .map((team) => (
+                              <SelectItem
+                                key={team.teamName}
+                                value={team.teamName}
+                              >
+                                {team.teamName}
+                              </SelectItem>
+                            ))}
                         </SelectContent>
                       </Select>
                     </div>
@@ -127,14 +129,16 @@ const page = ({ events, matches }) => {
                           <SelectValue placeholder="Second Team" />
                         </SelectTrigger>
                         <SelectContent>
-                          {selectedEvent.teams.map((team) => (
-                            <SelectItem
-                              key={team.teamName}
-                              value={team.teamName}
-                            >
-                              {team.teamName}
-                            </SelectItem>
-                          ))}
+                          {selectedEvent.teams
+                            .filter((team) => team.teamName !== firstTeam)
+                            .map((team) => (
+                              <SelectItem
+                                key={team.teamName}
+                                value={team.teamName}
+                              >
+                                {team.teamName}
+                              </SelectItem>
+                            ))}
                         </SelectContent>
                       </Select>
                     </div>

@@ -173,6 +173,7 @@ const CricketScorecard = ({
       </h3>
       {totalOversData > currentTeamOver + currentTeamBalls / 10 && (
         <div className="flex flex-wrap max-w-xl items-center justify-center mt-3 gap-4 mb-6">
+          <Button onClick={() => handleRuns(0)}>0 Dot</Button>
           <Button onClick={() => handleRuns(1)}>
             <FaPlus className="mr-2" /> 1 Run
           </Button>

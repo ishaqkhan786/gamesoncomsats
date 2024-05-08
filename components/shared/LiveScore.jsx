@@ -34,7 +34,6 @@ const LiveScore = ({ matchData }) => {
       setTeam1Goals(goals.team1goals), setTeam2Goals(goals.team2goals);
     });
     socket.on("basketballScore", (point) => {
-      console.log("point", point);
       setTeam1Point(point.team1goals), setTeam2Point(point.team2goals);
     });
     socket.on("cricketScore", (teamData) => {

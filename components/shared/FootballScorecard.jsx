@@ -33,10 +33,39 @@ const FootballScorecard = ({
   const [isLoading, setisLoading] = useState(false);
   const router = useRouter();
 
-  // if (isFinished) {
-  //     toast.success('Results saved!')
-  //     router.push('/')
-  // }
+  const initialMinutes = parseInt(localStorage.getItem("matchMinutes")) || 90;
+  const initialSeconds = parseInt(localStorage.getItem("matchSeconds")) || 0;
+
+  const [minutes, setMinutes] = useState(initialMinutes);
+  const [seconds, setSeconds] = useState(initialSeconds);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      if (minutes === 0 && seconds === 0) {
+        clearInterval(timer);
+        handleMatchFinish();
+      } else {
+        if (seconds > 0) {
+          setSeconds(seconds - 1);
+        }
+        if (seconds === 0) {
+          if (minutes === 0) {
+            clearInterval(timer);
+          } else {
+            setMinutes(minutes - 1);
+            setSeconds(59);
+          }
+        }
+      }
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [minutes, seconds]);
+
+  useEffect(() => {
+    localStorage.setItem("matchMinutes", minutes.toString());
+    localStorage.setItem("matchSeconds", seconds.toString());
+  }, [minutes, seconds]);
 
   const today = new Date();
   const year = today.getFullYear();
@@ -44,11 +73,29 @@ const FootballScorecard = ({
   const day = today.getDate();
 
   const handleMatchFinish = async () => {
+    // setisLoading(true);
+    // await finishMatch(matchId, winningTeam);
+    // socket.emit("matchFinish", winningTeam);
+    // await updatePointable(teamA, teamB, winningTeam);
+    // toast.success("Results saved");
+    // setisLoading(false);
+    // setIsFinished(true);
+
     setisLoading(true);
-    await finishMatch(matchId, winningTeam);
+    let newWinningTeam;
+    if (team1Goals === team2Goals) {
+      newWinningTeam = "tied";
+    } else if (team1Goals > team2Goals) {
+      newWinningTeam = teamA;
+    } else {
+      newWinningTeam = teamB;
+    }
+    setWinningTeam(newWinningTeam);
+    toast.success(newWinningTeam);
+    await finishMatch(matchId, newWinningTeam);
     socket.emit("matchFinish", winningTeam);
-    await updatePointable(teamA, teamB, winningTeam);
-    toast.success("Results saved");
+    await updatePointable(teamA, teamB, newWinningTeam);
+    toast.success("Results saved", newWinningTeam);
     setisLoading(false);
     setIsFinished(true);
   };
@@ -65,6 +112,10 @@ const FootballScorecard = ({
       <h2 className="text-4xl font-bold my-4 ">
         {team1Goals} - {team2Goals}
       </h2>
+      <p className=" text-slate-600 font-bold text-base italic">
+        {minutes < 10 ? `0${minutes}` : minutes}:
+        {seconds < 10 ? `0${seconds}` : seconds}
+      </p>
       <div className="flex flex-row items-center w-full justify-evenly mt-4">
         <div className="flex flex-col items-center justify-center">
           <h2 className="text-lg md:text-2xl font-semibold capitalize text-primary">
@@ -151,7 +202,7 @@ const FootballScorecard = ({
           </p>
         </div>
       </div>
-      {!isFinished && (
+      {/* {!isFinished && (
         <Select onValueChange={(v) => setWinningTeam(v)}>
           <SelectTrigger className=" w-64 mt-8 bg-white  rounded-md px-8 py-2 font-semibold text-sm focus:outline-slate-50 inline-flex items-center gap-2">
             <SelectValue placeholder="Select winning team" />
@@ -162,7 +213,7 @@ const FootballScorecard = ({
             <SelectItem value="tied">Match Tied</SelectItem>
           </SelectContent>
         </Select>
-      )}
+      )} */}
 
       {isFinished ? (
         <p className="text-slate-500 my-6 font-light italic text-sm">
@@ -171,7 +222,6 @@ const FootballScorecard = ({
       ) : (
         <Button
           className="mt-6 mb-4 px-8 rounded-full"
-          disabled={winningTeam === ""}
           onClick={handleMatchFinish}
         >
           {isLoading ? (

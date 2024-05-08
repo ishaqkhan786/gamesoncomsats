@@ -35,10 +35,50 @@ const BasketballScorecard = ({
   const [winningTeam, setWinningTeam] = useState("");
   const router = useRouter();
   const [isLoading, setisLoading] = useState(false);
-  // if (isFinished) {
-  //     toast.success('Results saved!')
-  //     router.push('/')
-  // }
+
+  const initialMinutes =
+    parseInt(localStorage.getItem("basketBallMinutes")) || 120;
+  const initialSeconds =
+    parseInt(localStorage.getItem("basketBallSeconds")) || 0;
+
+  const [minutes, setMinutes] = useState(initialMinutes);
+  const [seconds, setSeconds] = useState(initialSeconds);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      if (minutes === 0 && seconds === 0) {
+        clearInterval(timer);
+        handleMatchFinish();
+      } else {
+        if (seconds > 0) {
+          setSeconds(seconds - 1);
+        }
+        if (seconds === 0) {
+          if (minutes === 0) {
+            clearInterval(timer);
+          } else {
+            setMinutes(minutes - 1);
+            setSeconds(59);
+          }
+        }
+      }
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [minutes, seconds]);
+
+  useEffect(() => {
+    localStorage.setItem("basketBallMinutes", minutes.toString());
+    localStorage.setItem("basketBallSeconds", seconds.toString());
+  }, [minutes, seconds]);
+
+  useEffect(() => {
+    console.log("Team 1 goals:", team1Goals);
+  }, [team1Goals]);
+
+  useEffect(() => {
+    console.log("Team 2 goals:", team2Goals);
+  }, [team2Goals]);
 
   const today = new Date();
   const year = today.getFullYear();
@@ -47,10 +87,20 @@ const BasketballScorecard = ({
 
   const handleMatchFinish = async () => {
     setisLoading(true);
-    await finishMatch(matchId, winningTeam);
+    let newWinningTeam;
+    if (team1Goals === team2Goals) {
+      newWinningTeam = "tied";
+    } else if (team1Goals > team2Goals) {
+      newWinningTeam = teamA;
+    } else {
+      newWinningTeam = teamB;
+    }
+    setWinningTeam(newWinningTeam);
+    toast.success(newWinningTeam);
+    await finishMatch(matchId, newWinningTeam);
     socket.emit("matchFinish", winningTeam);
-    await updatePointable(teamA, teamB, winningTeam);
-    toast.success("Results saved");
+    await updatePointable(teamA, teamB, newWinningTeam);
+    toast.success("Results saved", newWinningTeam);
     setisLoading(false);
     setIsFinished(true);
   };
@@ -67,6 +117,10 @@ const BasketballScorecard = ({
       <h2 className="text-4xl font-bold my-4 ">
         {team1Goals} - {team2Goals}
       </h2>
+      <p className=" text-slate-600 font-bold text-base italic">
+        {minutes < 10 ? `0${minutes}` : minutes}:
+        {seconds < 10 ? `0${seconds}` : seconds}
+      </p>
       <div className="flex flex-row items-center w-full justify-evenly mt-4">
         <div className="flex flex-col items-center justify-center">
           <h2 className="text-lg md:text-2xl font-semibold capitalize text-primary">
@@ -76,7 +130,10 @@ const BasketballScorecard = ({
             <button
               className=" bg-slate-100/80 hover:bg-slate-200/70 p-1"
               onClick={async () => {
-                setTeam1Goals(team1Goals - 1);
+                setTeam1Goals((team1Goals) =>
+                  team1Goals === 0 ? 0 : team1Goals - 1
+                );
+
                 let goals = {
                   team1goals: team1Goals - 1,
                   team2goals: team2Goals,
@@ -92,7 +149,7 @@ const BasketballScorecard = ({
             <button
               className=" bg-slate-100/80 hover:bg-slate-200/70 p-1"
               onClick={async () => {
-                setTeam1Goals(team1Goals + 1);
+                setTeam1Goals((team1Goals) => team1Goals + 1);
                 let goals = {
                   team1goals: team1Goals + 1,
                   team2goals: team2Goals,
@@ -119,6 +176,7 @@ const BasketballScorecard = ({
               className=" bg-slate-100/80 hover:bg-slate-200/70 p-1"
               onClick={async () => {
                 setTeam2Goals(team2Goals - 1);
+
                 let goals = {
                   team1goals: team1Goals,
                   team2goals: team2Goals - 1,
@@ -153,7 +211,7 @@ const BasketballScorecard = ({
           </p>
         </div>
       </div>
-      {!isFinished && (
+      {/* {!isFinished && (
         <Select onValueChange={(v) => setWinningTeam(v)}>
           <SelectTrigger className=" w-64 mt-8 bg-white  rounded-md px-8 py-2 font-semibold text-sm focus:outline-slate-50 inline-flex items-center gap-2">
             <SelectValue placeholder="Select winning team" />
@@ -164,7 +222,7 @@ const BasketballScorecard = ({
             <SelectItem value="tied">Match Tied</SelectItem>
           </SelectContent>
         </Select>
-      )}
+      )} */}
 
       {isFinished ? (
         <p className="text-slate-500 my-6 font-light italic text-sm">
@@ -173,7 +231,6 @@ const BasketballScorecard = ({
       ) : (
         <Button
           className="mt-6 mb-4 px-4 rounded-full"
-          disabled={winningTeam === ""}
           onClick={handleMatchFinish}
         >
           {isLoading ? (
