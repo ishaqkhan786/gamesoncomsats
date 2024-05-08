@@ -177,14 +177,10 @@ const LiveScore = ({ matchData }) => {
                 </div>
               </div>
             )}
-
-            <p className=" w-full text-center text-sm font-thin text-slate-500 mb-5">
-              score is being managed by the umpires in realtime
-            </p>
           </div>
         </div>
       ) : (
-        <p>hehe</p>
+        <p></p>
       )}
     </div>
   );
