@@ -8,6 +8,7 @@ import { GiAmericanFootballHelmet } from "react-icons/gi";
 import { FaBaseball } from "react-icons/fa6";
 
 const LiveScore = ({ matchData }) => {
+  console.log(matchData.sportsType === "cricket" && matchData);
   const [isMatchStarted, setIsMatchStarted] = useState(true);
   const [turn, setTurn] = useState(matchData.teamTurn);
   const [isFinished, setIsFinished] = useState(false);
@@ -27,22 +28,33 @@ const LiveScore = ({ matchData }) => {
   const [teamBWickets, setTeamBWickets] = useState(
     matchData.teamBScoreData.wickets
   );
-  const [overs, SetOvers] = useState(matchData.teamAScoreData.overs);
+  const [overs, setOvers] = useState(matchData.teamAScoreData.overs);
+  const [predictedScore, setPredictedScore] = useState(0);
+
   useEffect(() => {
+    socket.on("cricketScore", (teamData) => {
+      setTeamAScore(teamData.team1.score);
+      setTeamAWickets(teamData.team1.wickets);
+      setTeamBScore(teamData.team2.score);
+      setTeamBWickets(teamData.team2.wickets);
+      setOvers(teamData.team1.overs);
+
+      // Prediction logic specifically for cricket
+      if (sportsType === "cricket" && teamData.team1.overs > 0) {
+        const currentRunRate =
+          teamData.team1.score / parseFloat(teamData.team1.overs);
+        const totalPredictedScore = Math.round(
+          currentRunRate * matchData.totalOvers
+        );
+        setPredictedScore(totalPredictedScore);
+      }
+    });
     socket.on("footballScore", (goals) => {
       //   console.log("goals", goals);
       setTeam1Goals(goals.team1goals), setTeam2Goals(goals.team2goals);
     });
     socket.on("basketballScore", (point) => {
       setTeam1Point(point.team1goals), setTeam2Point(point.team2goals);
-    });
-    socket.on("cricketScore", (teamData) => {
-      //   console.log(teamData);
-      setTeamAScore(teamData.team1.score);
-      setTeamAWickets(teamData.team1.wickets);
-      setTeamBScore(teamData.team2.score);
-      setTeamBWickets(teamData.team2.wickets);
-      SetOvers(teamData.team1.overs);
     });
   }, []);
 
@@ -67,18 +79,32 @@ const LiveScore = ({ matchData }) => {
             Live Scorecard
           </h2>
           <div className="flex flex-col items-start justify-center shadow-md my-6 bg-blue-50 p-4 w-full rounded-md ">
-            <div className="flex mb-1 items-center justify-center ">
-              <h2 className="mx-3 mt-2 text-xl md:text-2xl font-bold text-primary-500 capitalize">
-                {sportsType} Match
-              </h2>
-              <p className=" inline-flex px-6 rounded-full gap-2 py-0.5 items-center text-sm text-red-600 bg-red-100">
-                <CgMediaLive />
-                Live
+            <div className="flex w-full  justify-between items-center border-b-2">
+              <div>
+              <div className="flex mb-1 items-center justify-center ">
+                <h2 className="mx-3 mt-2 text-xl md:text-2xl font-bold text-primary-500 capitalize">
+                  {sportsType} Match
+                </h2>
+                <p className=" inline-flex px-6 rounded-full gap-2 py-0.5 items-center text-sm text-red-600 bg-red-100">
+                  <CgMediaLive />
+                  Live
+                </p>
+              </div>
+              <p className=" mb-4 mx-3 text-sm  w-full text-start pb-3 font-light text-slate-500">
+                {day}-{month}-{year}
               </p>
+              </div>
+
+        
+              {sportsType === "cricket" &&
+              matchData.teamTurn === matchData.teamA && (
+                <p className="text-lg text-slate-700 font-bold mr-4 border p-2  rounded-lg">
+                  Predicted Score: {Math.round(predictedScore)}
+                </p>
+              )}
             </div>
-            <p className=" mb-4 mx-3 text-sm border-b w-full text-start pb-3 font-light text-slate-500">
-              {day}-{month}-{year}
-            </p>
+
+          
 
             {sportsType === "cricket" && (
               <div className="text-lg mt-6 flex flex-col md:flex-row items-center justify-evenly w-full font-semibold mb-6">
@@ -130,6 +156,7 @@ const LiveScore = ({ matchData }) => {
                 </div>
               </div>
             )}
+
             {sportsType === "basketball" && (
               <div className=" my-6 rounded-md p-3 flex items-center justify-evenly gap-4  w-full">
                 <div>
