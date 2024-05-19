@@ -32,7 +32,11 @@ const CricketScorecard = ({
     overs = 0;
     balls = 0;
   } else {
-    [overs, balls] = overs.toString().split(".");
+    let integerPart = Math.floor(overs);
+    let decimalPart = Math.round((overs - integerPart) * 10);
+
+    overs = integerPart;
+    balls = decimalPart;
   }
 
   const [totalOversData, setTotalOversData] = useState(totalOvers);

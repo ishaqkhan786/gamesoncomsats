@@ -25,6 +25,7 @@ const FootballScorecard = ({
   matchId,
   teamAGoal,
   teamBGoals,
+  time,
 }) => {
   const [team1Goals, setTeam1Goals] = useState(teamAGoal);
   const [team2Goals, setTeam2Goals] = useState(teamBGoals);
@@ -33,7 +34,7 @@ const FootballScorecard = ({
   const [isLoading, setisLoading] = useState(false);
   const router = useRouter();
 
-  const initialMinutes = parseInt(localStorage.getItem("matchMinutes")) || 90;
+  const initialMinutes = parseInt(localStorage.getItem("matchMinutes")) || time;
   const initialSeconds = parseInt(localStorage.getItem("matchSeconds")) || 0;
 
   const [minutes, setMinutes] = useState(initialMinutes);

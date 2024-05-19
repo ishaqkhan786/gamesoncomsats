@@ -30,6 +30,7 @@ const page = ({ events, matches }) => {
   const [matchId, setMatchId] = useState("");
   const [teamTurn, setteamTurn] = useState(firstTeam);
   const [totalOvers, setTotalOvers] = useState(5);
+  const [matchTime, setMatchTime] = useState(0);
 
   console.log(totalOvers);
   socket.on("matchStart", () => {
@@ -143,6 +144,19 @@ const page = ({ events, matches }) => {
                       </Select>
                     </div>
                   </div>
+                  {(sportsType === "football" ||
+                    sportsType === "basketball") && (
+                    <div className=" flex items-start justify-start w-full gap-4">
+                      <Input
+                        type="number"
+                        placeholder="Match Time (in minutes)"
+                        className="bg-slate-50 text-sm text-slate-700 "
+                        onChange={(e) => {
+                          setMatchTime(e.target.value);
+                        }}
+                      />{" "}
+                    </div>
+                  )}
                   {sportsType === "cricket" &&
                     firstTeam !== "" &&
                     secondTeam !== "" && (
@@ -250,6 +264,7 @@ const page = ({ events, matches }) => {
                   matchId={match._id}
                   teamAGoal={match.teamAGoal}
                   teamBGoals={match.teamBGoals}
+                  time={matchTime}
                 />
               );
             }
@@ -263,6 +278,7 @@ const page = ({ events, matches }) => {
                   matchId={match._id}
                   teamAGoal={match.teamAPoints}
                   teamBGoals={match.teamBPoints}
+                  time={matchTime}
                 />
               );
             }

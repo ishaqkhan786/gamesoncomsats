@@ -81,30 +81,27 @@ const LiveScore = ({ matchData }) => {
           <div className="flex flex-col items-start justify-center shadow-md my-6 bg-blue-50 p-4 w-full rounded-md ">
             <div className="flex w-full  justify-between items-center border-b-2">
               <div>
-              <div className="flex mb-1 items-center justify-center ">
-                <h2 className="mx-3 mt-2 text-xl md:text-2xl font-bold text-primary-500 capitalize">
-                  {sportsType} Match
-                </h2>
-                <p className=" inline-flex px-6 rounded-full gap-2 py-0.5 items-center text-sm text-red-600 bg-red-100">
-                  <CgMediaLive />
-                  Live
+                <div className="flex mb-1 items-center justify-center ">
+                  <h2 className="mx-3 mt-2 text-xl md:text-2xl font-bold text-primary-500 capitalize">
+                    {sportsType} Match
+                  </h2>
+                  <p className=" inline-flex px-6 rounded-full gap-2 py-0.5 items-center text-sm text-red-600 bg-red-100">
+                    <CgMediaLive />
+                    Live
+                  </p>
+                </div>
+                <p className=" mb-4 mx-3 text-sm  w-full text-start pb-3 font-light text-slate-500">
+                  {day}-{month}-{year}
                 </p>
               </div>
-              <p className=" mb-4 mx-3 text-sm  w-full text-start pb-3 font-light text-slate-500">
-                {day}-{month}-{year}
-              </p>
-              </div>
 
-        
               {sportsType === "cricket" &&
-              matchData.teamTurn === matchData.teamA && (
-                <p className="text-lg text-slate-700 font-bold mr-4 border p-2  rounded-lg">
-                  Predicted Score: {Math.round(predictedScore)}
-                </p>
-              )}
+                matchData.teamTurn === matchData.teamA && (
+                  <p className="text-lg text-slate-700 font-bold mr-4 border p-2  rounded-lg">
+                    Predicted Score: {Math.round(predictedScore)}
+                  </p>
+                )}
             </div>
-
-          
 
             {sportsType === "cricket" && (
               <div className="text-lg mt-6 flex flex-col md:flex-row items-center justify-evenly w-full font-semibold mb-6">

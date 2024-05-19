@@ -28,6 +28,7 @@ const BasketballScorecard = ({
   matchId,
   teamAGoal,
   teamBGoals,
+  time,
 }) => {
   const [team1Goals, setTeam1Goals] = useState(teamAGoal);
   const [team2Goals, setTeam2Goals] = useState(teamBGoals);
@@ -37,7 +38,7 @@ const BasketballScorecard = ({
   const [isLoading, setisLoading] = useState(false);
 
   const initialMinutes =
-    parseInt(localStorage.getItem("basketBallMinutes")) || 120;
+    parseInt(localStorage.getItem("basketBallMinutes")) || time;
   const initialSeconds =
     parseInt(localStorage.getItem("basketBallSeconds")) || 0;
 
