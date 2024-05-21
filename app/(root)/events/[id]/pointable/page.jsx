@@ -9,7 +9,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { getPointableOfEvent } from "@/lib/database/actions/pointable.action";
-import PredictiveAnalysis from "@/components/shared/PredictiveAnalysis";
+import GenerateReport from "@/components/shared/GenerateReport";
 
 const page = async ({ params: { id } }) => {
   const pointable = await getPointableOfEvent(id);
