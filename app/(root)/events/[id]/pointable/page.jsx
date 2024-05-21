@@ -9,6 +9,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { getPointableOfEvent } from "@/lib/database/actions/pointable.action";
+import PredictiveAnalysis from "@/components/shared/PredictiveAnalysis";
 
 const page = async ({ params: { id } }) => {
   const pointable = await getPointableOfEvent(id);
@@ -16,11 +17,14 @@ const page = async ({ params: { id } }) => {
 
   return (
     <div className=" flex flex-col items-start justify-start p-4 md:p-8  md:px-12">
-      <h1 className=" text-2xl font-bold border-b pb-4 w-full">
-        {" "}
-        {pointable && pointable[0].eventId.eventName}{" "}
-        <span className=" ml-2"> Points Table</span>
-      </h1>
+      <div className=" w-full flex items-center justify-between mb-3">
+        <h1 className=" text-2xl font-bold border-b pb-4 w-full">
+          {" "}
+          {pointable && pointable[0].eventId.eventName}{" "}
+          <span className=" ml-2"> Points Table</span>
+        </h1>
+        <PredictiveAnalysis />
+      </div>
 
       <Table>
         <TableCaption>
