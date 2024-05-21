@@ -23,7 +23,7 @@ const page = async ({ params: { id } }) => {
           {pointable && pointable[0].eventId.eventName}{" "}
           <span className=" ml-2"> Points Table</span>
         </h1>
-        <PredictiveAnalysis onClick={(e)=>{console.log('hi')}}/>
+        <PredictiveAnalysis />
       </div>
 
       <Table>
