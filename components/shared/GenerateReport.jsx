@@ -2,7 +2,7 @@
 
 import React from "react";
 
-const PredictiveAnalysis = () => {
+const GenerateReport = () => {
   return (
     <button
       className=" text-white bg-primary px-4 py-1 text-nowrap rounded-lg"
@@ -10,9 +10,9 @@ const PredictiveAnalysis = () => {
         console.log("hi");
       }}
     >
-      Predict Analysis
+      Generate Report
     </button>
   );
 };
 
-export default PredictiveAnalysis;
+export default GenerateReport;
